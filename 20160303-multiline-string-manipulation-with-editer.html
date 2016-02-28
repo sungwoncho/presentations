@@ -124,8 +124,8 @@ let content = fs.readFileSync('./sample.txt');
 editer.insert(' dude', content, {
   after: {regex: /Charlie/}
 });
-editer.insert(' dude', content, {
-  after: {regex: /Charlie/, occurrence: 2}
+editer.insert('Dude, ', content, {
+  before: {regex: /Charlie/, occurrence: 2}
 });
 editer.insert('no.', content, {
   after: {regex: /asleep\?/, last: true, asNewLine: true}
@@ -247,7 +247,7 @@ import fs from 'fs';
 import editer from 'editer';
 
 let content = fs.readFileSync('./sample.js');
-editer.insert("import comments from './comments'", {
+editer.insert("import comments from './comments'", content {
   or: [
     {after: {regex: /import .*\n/g, last: true}, asNewLine: true},
     {before: {line: 1}, asNewLine: true, _appendToModifier: '\n'}
@@ -343,7 +343,7 @@ editer.insert('comments', content, {
   asNewLine: true
 });
 
-if (beginningPosition.line === closingBracketPosition.line-1) {
+if (beginningPosition.line !== closingBracketPosition.line-1) {
   editer.insert(',', content, {
     before: {line: closingBracketPosition.line},
   });
