@@ -68,8 +68,18 @@
             <h2>What Is Mantra</h2>
 
 						<p>
-							An opinionated way to structure Meteor projects
+							A specification for structuring for Meteor apps
 						</p>
+          </section>
+
+          <section>
+            <h2>Not</h2>
+
+						<ul>
+							<li>Framework</li>
+							<li>Platform</li>
+							<li>Code generator</li>
+						</ul>
           </section>
 
           <section>
@@ -85,31 +95,30 @@
 							<li>
 								Sanity
 							</li>
+						</ul>
+          </section>
+
+          <section>
+						<h2>Building Blocks</h2>
+
+						<ul>
 							<li>
-								Productivity
+								ES 2015 Modules
 							</li>
 							<li>
-								Testable
+								React
+							</li>
+							<li>
+								Meteor
 							</li>
 						</ul>
           </section>
 
-					<section>
-						<p>
-							Meteor app architecture with React
-						</p>
-						<img src="assets/meteor-logo.png" style="box-shadow: none; margin-right: 60px;" alt="">
-						<img src="assets/react-logo.png" alt="">
-					</section>
         </section>
 
         <section>
           <section>
             <h2>Spec Overview</h2>
-
-            <p>
-							Mantra is a specification
-            </p>
           </section>
 
 					<section>
@@ -118,8 +127,38 @@
 						<ul>
 							<li>Dependency injection</li>
 							<li>No isomorphism</li>
-							<li>React UI</li>
+							<li>Modular</li>
 						</ul>
+					</section>
+
+					<section>
+						<h2>Directory structure</h2>
+
+						<img src="assets/mantra-structure.png" style="width: 115%;" alt="">
+					</section>
+
+					<section>
+						<h2>App context</h2>
+
+						<p>Shared variables</p>
+
+						<pre>context.js<code data-trim>
+import * as Collections from '/lib/collections';
+import {Meteor} from 'meteor/meteor';
+import {FlowRouter} from 'meteor/kadira:flow-router';
+import {ReactiveDict} from 'meteor/reactive-dict';
+import {Tracker} from 'meteor/tracker';
+
+export default function () {
+	return {
+		Meteor,
+		FlowRouter,
+		Collections,
+		LocalState: new ReactiveDict(),
+		Tracker
+	};
+}
+</code></pre>
 					</section>
 
 					<section>
@@ -190,35 +229,6 @@ export default composeAll(
 </code></pre>
 					</section>
 
-					<section>
-						<h2>App context</h2>
-
-						<p>Pass actions &amp; props to components</p>
-
-						<pre>context.js<code data-trim>
-import * as Collections from '/lib/collections';
-import {Meteor} from 'meteor/meteor';
-import {FlowRouter} from 'meteor/kadira:flow-router';
-import {ReactiveDict} from 'meteor/reactive-dict';
-import {Tracker} from 'meteor/tracker';
-
-export default function () {
-  return {
-    Meteor,
-    FlowRouter,
-    Collections,
-    LocalState: new ReactiveDict(),
-    Tracker
-  };
-}
-</code></pre>
-					</section>
-
-					<section>
-						<h2>Directory structure</h2>
-
-						<img src="assets/mantra-structure.png" style="width: 115%;" alt="">
-					</section>
         </section>
 
         <section>
@@ -231,6 +241,11 @@ export default function () {
 						<p>
 							Make real time presentation from GitHub PRs<br>
 							<a href="http://vym.io">vym.io</a>
+						</p>
+						<p>
+							<a href="https://www.youtube.com/watch?v=CdM4A9v2vro" target="_blank">
+								demo
+							</a>
 						</p>
 					</section>
         </section>
