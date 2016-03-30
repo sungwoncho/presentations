@@ -229,6 +229,50 @@ export default composeAll(
 </code></pre>
 					</section>
 
+					<section>
+						<h2>index.js</h2>
+
+						<p>Entry point for a module</p>
+
+						<pre>main.js<code data-trim>
+import methodStubs from './configs/method_stubs';
+import actions from './actions';
+import routes from './routes.jsx';
+
+export default {
+  routes,
+  actions,
+  load(context) {
+    methodStubs(context);
+  }
+};
+</code></pre>
+					</section>
+
+					<section>
+						<h2>main.js</h2>
+
+						<p>Entry point for client side code</p>
+
+						<pre>main.js<code data-trim>
+import {createApp} from 'mantra-core';
+import initContext from './configs/context';
+
+// modules
+import coreModule from './modules/core';
+import commentsModule from './modules/comments';
+
+// init context
+const context = initContext();
+
+// create app
+const app = createApp(context);
+app.loadModule(coreModule);
+app.loadModule(commentsModule);
+app.init();
+</code></pre>
+					</section>
+
         </section>
 
         <section>
