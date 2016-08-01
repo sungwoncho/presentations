@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>RemoteBase Product Hunt Demo</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 3em !important;
+		}
+		h2 {
+	    font-size: 1.2em !important;
+	    margin-bottom: 130px;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section style="padding-top: 52px;">
+					<h1>RemoteBase</h1>
+					<h2>9 Things I Learned Building RemoteBase</h2>
+					<div style="font-size: 70px; padding-top: 40px;">
+						<p>
+							<small><a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a> / <a href="http://twitter.com/mikeswcho" target="_blank">@mikeswcho</a></small>
+						</p>
+
+						<p>
+							<small>Presented Auguest 2 at <a target="_blank" href="http://www.meetup.com/Product-Hunt-Sydney/">Product Hunt Sydney</a></small>
+						</p>
+					</div>
+				</section>
+
+        <section style="font-size: 140%;">
+          <h2>Structure</h2>
+          <ol style="width: 500px; margin-left: 210px;">
+            <li>Problem / Demo</li>
+						<li>Technologies</li>
+						<li>Learning</li>
+          </ol>
+        </section>
+
+        <section style="font-size: 140%;">
+          <section>
+            <h2>Problem</h2>
+
+						<p style="font-size: 42px;">
+							Asymmetry of information in the remote job market
+						</p>
+          </section>
+
+					<section>
+						<h4>We don't get remote jobs. We join remote teams.</h4>
+					</section>
+        </section>
+
+        <section style="font-size: 140%;">
+          <section>
+            <h2>Demo</h2>
+
+						<a href="https://youtu.be/I4_G07Ryz_0">
+							https://youtu.be/I4_G07Ryz_0
+						</a>
+          </section>
+        </section>
+
+        <section style="font-size: 140%;">
+          <section>
+            <h2 style="font-size: 3em;">Technologies</h2>
+
+						<ul>
+							<li>Node.js</li>
+							<li>React</li>
+							<li>MongoDB</li>
+						</ul>
+          </section>
+        </section>
+
+        <section style="font-size: 140%;">
+          <section>
+            <h2 style="font-size: 3em;">Learnings</h2>
+          </section>
+					<section>
+						<p style="font-size: 48px;">
+							1. No need to create something completely new.
+						</p>
+					</section>
+          <section>
+            <img src="assets/nomadlist.png" alt="" >
+          </section>
+					<section>
+						<img src="assets/producthunt.png" alt="" >
+					</section>
+          <section>
+						<p style="font-size: 48px;">
+							2. Don't be a technology zealot.
+						</p>
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							3. You throw away most of the code anyway.
+						</p>
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							4. Work asynchronously.
+						</p>
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							5. Build features lazily.
+						</p>
+						<img src="assets/lazy.png" alt="">
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							6. Drive the car; dont' keep building.
+						</p>
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							7. People don't care about your product.
+						</p>
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							8. Get someone else to do it.
+						</p>
+						<img src="assets/procedure.png" alt="">
+          </section>
+          <section>
+						<p style="font-size: 48px;">
+							9. YAGNI
+						</p>
+          </section>
+        </section>
+
+        <section>
+          <h1>RemoteBase</h1>
+          <a href="https://remotebase.io" target="_blank">remotebase.io</a>
+        </section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
