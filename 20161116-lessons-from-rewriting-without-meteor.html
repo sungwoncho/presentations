@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Rewriting RemoteBase without Meteor</title>
+		<title>Lessons from Rewriting Without Meteor</title>
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -42,8 +42,7 @@
 		<div class="reveal">
       <div class="slides">
 				<section>
-					<h2>Rewriting RemoteBase without Meteor</h2>
-					<h5>How I did it and what I learned</h5>
+					<h2>Lessons from Rewriting Without Meteor</h2>
 					<p>
 						<small><a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a> / <a href="http://twitter.com/mikeswcho" target="_blank">@mikeswcho</a></small>
 					</p>
@@ -81,7 +80,7 @@
           <section>
             <h2>Why?</h2>
 						<ul>
-							<li>Mistakes</li>
+							<li>Mistakes in setup</li>
 							<li>Wrong tool for the job</li>
 						</ul>
           </section>
@@ -126,7 +125,7 @@
 						<h3>3. No horizontal scaling</h3>
 
 						<ul>
-							<li>Utilize all cores</li>
+							<li>Did not utilize all cores</li>
 							<li>Use <a href="https://github.com/meteorhacks/cluster">cluster</a> by arunoda</li>
 						</ul>
 					</section>
@@ -157,9 +156,6 @@
 
 					<section>
 						<h3>3. Write API</h3>
-						<p>
-							Express.js
-						</p>
 					</section>
         </section>
 
@@ -170,16 +166,17 @@
 
 					<section>
 						<h3>1. Server side rendering is trivial</h3>
-						<p>
-							No publication/subscription.
-						</p>
+						<ul>
+							<li>No publication/subscription.</li>
+							<li>As easy as `React.renderToString(&lt;App /&gt;);`</li>
+						</ul>
 					</section>
 
 					<section>
 						<h3>2. User management is less trivial</h3>
 
 						<p>
-							No more `Meteor.loginWithTwitter()`.
+							Sadly, no more `Meteor.loginWithTwitter()`.
 						</p>
 					</section>
 
@@ -202,14 +199,32 @@
 
         <section>
           <h2>Conclusion</h2>
-					<ol>
+					<ol style="width: 589px; margin-left: 210px;">
 						<li>Choose the right tool</li>
 						<li>Use Mantra to decouple view layers</li>
+						<li>Set up properly or just use PaaS</li>
 					</ol>
         </section>
+
+        <section>
+					<ul style="font-size: 80%;">
+						<li>
+							Based on a <a href="https://remotebase.io/blog/rewriting-without-meteor/">blog article</a>.
+						</li>
+						<li>
+							Older version is open sourced at <a href="https://github.com/remotebase/remotebase-mantra">https://github.com/remotebase/remotebase-mantra</a>.
+						</li>
+						<li>
+							Slides are available on <a href="https://sungwoncho.github.io/presentations">https://sungwoncho.github.io/presentations</a>.
+						</li>
+					</ul>
+        </section>
+
         <section>
           <h2>End</h2>
-					<a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a>
+					<p>
+						<a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a>
+					</p>
         </section>
       </div>
 		</div>
