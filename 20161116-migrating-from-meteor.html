@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Rewriting RemoteBase without Meteor</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+					<h2>Rewriting RemoteBase without Meteor</h2>
+					<h5>How I did it and what I learned</h5>
+					<p>
+						<small><a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a> / <a href="http://twitter.com/mikeswcho" target="_blank">@mikeswcho</a></small>
+					</p>
+
+					<p>
+						<small>November 14, 2016 at <a href="www.meetup.com/Meteor-Sydney/" target="_blank">Meteor Sydney</a></small>
+					</p>
+				</section>
+
+        <section>
+					<h2>Outline</h2>
+
+          <ol style="width: 500px; margin-left: 210px;">
+						<li>RemoteBase?</li>
+						<li>Why?</li>
+						<li>How?</li>
+						<li>What Changed?</li>
+          </ol>
+        </section>
+
+        <section>
+          <section>
+            <h2>RemoteBase?</h2>
+						<p>
+							A directory of remote companies and jobs.
+						</p>
+          </section>
+
+          <section>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/mJKSNEJlHD4" frameborder="0" allowfullscreen></iframe>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Why?</h2>
+						<ul>
+							<li>Mistakes</li>
+							<li>Wrong tool for the job</li>
+						</ul>
+          </section>
+
+					<section>
+						<h3>1. Not enabling oplog tailing</h3>
+						<p>
+							Unless `OPLOG_URL` is provided, server polls the DB for diff
+						</p>
+					</section>
+
+					<section>
+						<p>Turn off reactivity if not using realtime update.</p>
+						<pre>companies.js<code>Meteor.publish('companies', function (query, limit) {
+  check(query, Object);
+  check(limit, Match.Optional(Number));
+
+  query['hidden'] = {$ne: true};
+
+  // {reactive: false}
+  let option = {sort: {official: -1, name: 1}};
+
+  if (limit) {
+    option.limit = limit;
+  }
+
+  Counts.publish(this, 'companies-counter', Companies.find(query), {noReady: true});
+  return Companies.find(query, option);
+});</code></pre>
+					</section>
+
+					<section>
+						<h3>2. DB setup</h3>
+
+						<ul>
+							<li>No indexing</li>
+							<li>Running app and MongoDB on the same host</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>3. No horizontal scaling</h3>
+
+						<ul>
+							<li>Utilize all cores</li>
+							<li>Use <a href="https://github.com/meteorhacks/cluster">cluster</a> by arunoda</li>
+						</ul>
+					</section>
+
+					<section>
+						<h3>No need for real time updates</h3>
+					</section>
+        </section>
+
+        <section>
+          <section>
+            <h2>How?</h2>
+          </section>
+
+					<section>
+						<h3>1. Set up development environment</h3>
+						<p>
+							'webpack-react-redux-babel-autoprefixer-hmr-scss-modules-universal-auth-boilerplate'
+						</p>
+					</section>
+
+					<section>
+						<h3>2. Copy over React components</h3>
+						<p>
+							Mantra decouples behaviors from view layer
+						</p>
+					</section>
+
+					<section>
+						<h3>3. Write API</h3>
+						<p>
+							Express.js
+						</p>
+					</section>
+        </section>
+
+        <section>
+          <section>
+            <h2>What Changed?</h2>
+          </section>
+
+					<section>
+						<h3>1. Server side rendering is trivial</h3>
+						<p>
+							No publication/subscription.
+						</p>
+					</section>
+
+					<section>
+						<h3>2. User management is less trivial</h3>
+
+						<p>
+							No more `Meteor.loginWithTwitter()`.
+						</p>
+					</section>
+
+					<section>
+						<h3>3. Deployment is faster</h3>
+
+						<p>
+							No more meteor build
+						</p>
+					</section>
+
+					<section>
+						<h3>4. Flexible stack</h3>
+
+						<p>
+							Currently Go + node.js + Postgres + Mongo
+						</p>
+					</section>
+        </section>
+
+        <section>
+          <h2>Conclusion</h2>
+					<ol>
+						<li>Choose the right tool</li>
+						<li>Use Mantra to decouple view layers</li>
+					</ol>
+        </section>
+        <section>
+          <h2>End</h2>
+					<a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a>
+        </section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
