@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+			if (location.hostname.indexOf('github.io') > -1) {
+				(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+				(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+				ga('create', 'UA-55773666-12', 'auto');
+				ga('send', 'pageview');
+			}
+	  </script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Bind vs. Arrow Functions In Node.js</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 2em !important;
+		}
+		h2 {
+	    font-size: 1.3em !important;
+	    margin-bottom: 130px;
+		}
+		pre {
+	    font-size: 26px !important;
+		}
+		.fast {
+	    background: #d1ffd1;
+		}
+		.slow {
+			background: #ffd5d5;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+					<h1>Bind vs. Arrow Functions in Node.js</h1>
+					<div style="font-size: 70px; padding-top: 40px;">
+						<p>
+							<small><a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a> / <a href="http://twitter.com/mikeswcho" target="_blank">@mikeswcho</a></small>
+						</p>
+
+						<p>
+							<small>Presented on April 9th 2017 at <a target="_blank" href="https://www.meetup.com/sydney-node-ninjas/">Sydney Node.ninjas</a></small>
+						</p>
+					</div>
+				</section>
+
+        <section>
+          <h2>Structure</h2>
+          <ol style="width: 500px; margin-left: 210px;">
+            <li>Overview</li>
+						<li>Comparison</li>
+						<li>Conclusion</li>
+          </ol>
+        </section>
+
+        <section>
+          <section>
+            <h2>Overview</h2>
+
+						<p>
+							Compare arrow function and bind in node.js environment.
+						</p>
+
+						<p>
+							We will look at:
+						</p>
+						<ul>
+							<li>Memory footprint</li>
+							<li>Speed</li>
+						</ul>
+	        </section>
+
+					<section>
+						<h2>Use cases</h2>
+
+						<ul>
+							<li>Providing `this` context</li>
+							<li>Currying</li>
+						</ul>
+					</section>
+
+					<section>
+						<h2>Providing `this` context</h2>
+
+						<pre><code data-trim>
+this.value = 'foo';
+
+// Bind
+var bound = (function() {
+  return this.value;
+}).bind(this);
+
+// Arrow function
+var arrow = () => {
+  return this.value;
+}
+</code></pre>
+					</section>
+
+					<section>
+						<p>
+							Useful when passing extracted method as callback:
+						</p>
+
+												<pre><code data-trim>
+						obj.on('error', connsole.log.bind(console));
+						</code></pre>
+
+						vs.
+
+												<pre><code data-trim>
+						obj.on('error', (err) => { console.log(err); }));
+						</code></pre>
+					</section>
+
+					<section>
+						<h2>Currying</h2>
+
+						<pre><code data-trim>
+// Given
+function exp(a, b) {
+  return a ** b;
+}
+
+// Bind
+var expBase10 = exp.bind(null, 10);
+expBase10(2); // => 100
+
+// Arrow function
+var expBase10 = (b) => exp(10, b);
+expBase10(2); // => 100
+</code></pre>
+					</section>
+
+					<section>
+						<h2>Is one more performant than another?</h2>
+					</section>
+        </section>
+
+        <section style="font-size: 180%;">
+          <section>
+            <h2>Comparison</h2>
+						<p>Memory footprint</p>
+          </section>
+
+          <section>
+						<h2 style="font-size: 1em !important;">Function.prototype.bind()</h2>
+						<hr>
+						<p style="font-size: 49px;">
+							The bind() method <u>creates a new function</u> that, when called, has its this keyword set to the provided value ...
+						</p>
+						<div style="float: right; font-size: 30px;">
+							<a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind">
+								MDN
+							</a>
+						</div>
+          </section>
+
+          <section>
+						<p>Methodology</p>
+
+						<ol style="font-size: 48px;">
+							<li>Record heap usage</li>
+							<li>Allocate a function</li>
+							<li>Record heap usage</li>
+							<li>Calculate diff between 3 and 1</li>
+						</ol>
+          </section>
+
+					<section>
+						<h2 style="font-size: 1em !important;">process.memoryUsage()</h2>
+						<hr>
+<pre><code>{
+  rss: 4935680,
+  heapTotal: 1826816,
+  heapUsed: 650472, // <==
+  external: 49879
+}
+</code></pre>
+					</section>
+
+					<section>
+<pre>size_arrow.js<code style="max-height: none;">var process = require('process');
+
+this.name = 'node.ninjas';
+
+var before = process.memoryUsage();
+
+// Allocate arrow function
+var fn = () => {
+  return this.name;
+}
+
+var after = process.memoryUsage();
+
+console.log("#### Arrow function")
+console.log("## heap delta:",
+	after.heapUsed - before.heapUsed)
+</code></pre>
+					</section>
+
+					<section>
+<pre>size_bind.js<code style="max-height: none;">var process = require('process');
+
+this.name = 'node.ninjas';
+
+var before = process.memoryUsage();
+
+// Allocate bound function
+var fn = function() {
+  return this.name;
+}.bind(this);
+
+var after = process.memoryUsage();
+
+console.log("#### Bound function")
+console.log("## heap delta:",
+	after.heapUsed - before.heapUsed)
+</code></pre>
+					</section>
+
+					<section>
+						<img src="assets/size_demo.gif" alt="size_demo">
+					</section>
+
+					<section>
+						<p style="font-size: 50px;">Result across multiple V8 versions</p>
+
+						<table style="font-size: 40px;">
+							<thead>
+								<th>node</th>
+								<th>V8</th>
+								<th>arrow</th>
+								<th>bind</th>
+							</thead>
+							<tbody>
+								<tr>
+									<td>v0.12.10</td>
+									<td>v3.28.71.19</td>
+									<td class="fast">704</td>
+									<td class="slow">5256</td>
+								</tr>
+								<tr>
+									<td>v4.8.1 (Argon)</td>
+									<td>v4.5.103.46</td>
+									<td class="fast">944</td>
+									<td class="slow">5496</td>
+								</tr>
+								<tr>
+									<td>v6.10.1 (Boron)</td>
+									<td>v5.1.281.95</td>
+									<td class="fast">1144</td>
+									<td class="slow">1688</td>
+								</tr>
+								<tr>
+									<td>v7.7.4</td>
+									<td>v5.5.372.42</td>
+									<td class="fast">1208</td>
+									<td class="slow">1280</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p style="
+color: #797979;
+font-size: 29px;
+text-align: right;
+margin-top: 38px;
+margin-right: 50px;">
+							Tested on macOS Sierra v10.12.3
+						</p>
+					</section>
+
+					<section>
+						<h2>Verdict</h2>
+						<ul style="font-size: 49px;">
+							<li>
+								Arrow functions take less memory than bound functions
+							</li>
+							<li>
+								In recent V8 engines, bound functions take less memory than before.
+							</li>
+						</ul>
+					</section>
+        </section>
+
+        <section style="font-size: 180%;">
+					<section>
+            <h2>Comparison</h2>
+						<p>Speed</p>
+          </section>
+
+          <section>
+          </section>
+        </section>
+
+        <section>
+          <h1>Thanks</h1>
+					<ul>
+						<li>
+							<a href="https://sungwoncho.io" target="_blank">GitHub repo with benchmarks</a>
+						</li>
+						<li>
+							<div>
+								Sung
+							</div>
+							<div>
+								<a href="https://sungwoncho.io" target="_blank">https://sungwoncho.io</a>
+							</div>
+						</li>
+					</ul>
+        </section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
