@@ -213,11 +213,14 @@ expBase10(2); // => 100
 
 					<section>
 						<h2 style="font-size: 1em !important;">process.memoryUsage()</h2>
+            <p style="font-size: 39px;">
+               returns an object describing the memory usage of the Node.js process measured in bytes.
+            </p>
 						<hr>
 <pre><code>{
   rss: 4935680,
   heapTotal: 1826816,
-  heapUsed: 650472, // <==
+  heapUsed: 650472, // <== V8's memory usage
   external: 49879
 }
 </code></pre>
@@ -316,7 +319,7 @@ margin-right: 50px;">
 					</section>
 
 					<section>
-						<h2>Verdict</h2>
+						<h2>Summary - Memory</h2>
 						<ul style="font-size: 49px;">
 							<li>
 								Arrow functions take less memory than bound functions
@@ -331,28 +334,422 @@ margin-right: 50px;">
         <section style="font-size: 180%;">
 					<section>
             <h2>Comparison</h2>
-						<p>Speed</p>
+						<p style="font-size: 49px;">Speed</p>
+
+            <ol style="font-size: 41px;">
+              <li>
+                Allocation
+              </li>
+              <li>
+                Invocation
+              </li>
+            </ol>
           </section>
 
           <section>
+            <h2>
+              Allocation
+            </h2>
+						<p style="font-size: 49px;">Methodology</p>
+
+						<ol style="font-size: 40px;">
+							<li>Warm up</li>
+							<li>Measure allocation time 5000 times</li>
+							<li>Remove outliers</li>
+							<li>Get statistics</li>
+						</ol>
           </section>
+
+          <section>
+						<h2 style="font-size: 1em !important;">process.hrtime([time])</h2>
+            <p style="font-size: 39px;">
+              returns the current high-resolution real time in a `[seconds, nanoseconds]` array
+            </p>
+						<hr>
+<pre><code >var time = process.hrtime(); // [ 1800216, 25 ]
+
+setTimeout(() => {
+  var diff = process.hrtime(time); // [ 1, 552 ]
+}, 1000);
+</code></pre>
+					</section>
+
+          <section style="
+    display: inline-block;
+    width: 118%;
+    left: -48px;
+    height: 150%;
+            ">
+<pre style="    top: -305px;">speed_alloc_arrow.js<code style="max-height: 553px;">var process = require('process');
+var json2csv = require('json2csv');
+var fs = require('fs');
+
+this.name = 'node.ninjas';
+
+// warmup
+for (var i = 1; i < 10000; i++) {
+  var fn = () => {
+    return this.name;
+  }
+}
+
+var diffs = [];
+var n = 5000;
+for (var i = 1; i < n; i++) {
+  var start = process.hrtime();
+
+  var fn = () => {
+    return this.name;
+  }
+
+  var diff = process.hrtime(start)[1];
+  diffs.push(diff)
+}
+
+var data = diffs.map(function(d) {
+  return { time: d };
+});
+var csv = json2csv({ data: data, fields: [ 'time' ]})
+
+fs.writeFile('speed_arrow.csv', csv, function(err) {
+    if (err) throw err;
+    console.log('file saved');
+});
+</code></pre>
+          </section>
+
+          <section style="
+            display: inline-block;
+            width: 118%;
+            left: -48px;
+            height: 150%;
+                    ">
+        <pre style="    top: -305px;">speed_alloc_bind.js<code style="max-height: 553px;">var process = require('process');
+var json2csv = require('json2csv');
+var fs = require('fs');
+
+this.name = 'node.ninjas';
+
+// warmup
+for (var i = 1; i < 10000; i++) {
+  var fn = () => {
+    return this.name;
+  }
+}
+
+var diffs = [];
+var n = 5000;
+for (var i = 1; i < n; i++) {
+  var start = process.hrtime();
+
+  var fn = function() {
+    return this.name;
+  }.bind(this);
+
+  var diff = process.hrtime(start)[1];
+  diffs.push(diff)
+}
+
+var data = diffs.map(function(d) {
+  return { time: d };
+});
+var csv = json2csv({ data: data, fields: [ 'time' ]})
+
+fs.writeFile('speed_bind.csv', csv, function(err) {
+    if (err) throw err;
+    console.log('file saved');
+});
+        </code></pre>
+          </section>
+
+          <section style="
+            display: inline-block;
+            width: 118%;
+            left: -48px;
+            height: 150%;
+                    ">
+        <pre style="    top: -305px;">analyze.py<code style="max-height: 553px;">import csv
+import sys
+import pandas as pd
+import matplotlib.pyplot as plt
+from numpy import std, mean, abs, median
+
+values = []
+filename = sys.argv[1]
+
+with open(filename, 'rt') as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        values.append(int(row['time']))
+
+m = mean(values)
+d = std(values)
+
+def reject_outliers(x):
+    if abs(x - m) <= d:
+        return x
+
+values = list(filter(reject_outliers, values))
+
+print('min', min(values))
+print('max', max(values))
+print('mean', mean(values))
+print('std', std(values))
+
+df  = pd.read_csv("speed_arrow.csv")
+df.plot()  # plots all columns against index
+plt.show()
+        </code></pre>
+          </section>
+
+<!--          <section>
+            <img src="assets/analyze.gif" alt="analyze">
+          </section>
+          -->
+          <section>
+						<p style="font-size: 50px;">Result across multiple V8 versions</p>
+
+						<table style="font-size: 40px;">
+							<thead>
+								<th>node</th>
+								<th>V8</th>
+								<th>min</th>
+								<th>max</th>
+								<th>mean</th>
+								<th>stddev</th>
+							</thead>
+							<tbody>
+								<tr>
+									<td>v0.12.10</td>
+									<td>v3.28.71.19</td>
+									<td class="fast">704</td>
+									<td class="slow">5256</td>
+								</tr>
+								<tr>
+									<td>v4.8.1 (Argon)</td>
+									<td>v4.5.103.46</td>
+									<td class="fast">944</td>
+									<td class="slow">5496</td>
+								</tr>
+								<tr>
+									<td>v6.10.1 (Boron)</td>
+									<td>v5.1.281.95</td>
+									<td class="fast">1144</td>
+									<td class="slow">1688</td>
+								</tr>
+								<tr>
+									<td>v7.7.4</td>
+									<td>v5.5.372.42</td>
+									<td class="fast">1208</td>
+									<td class="slow">1280</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p style="
+color: #797979;
+font-size: 29px;
+text-align: right;
+margin-top: 38px;
+margin-right: 50px;">
+							Tested on macOS Sierra v10.12.3
+						</p>
+					</section>
+           <section>
+            <h2>
+              Invocation
+            </h2>
+						<p style="font-size: 49px;">Methodology</p>
+
+						<ol style="font-size: 40px;">
+							<li>Warm up</li>
+							<li>Call functions 5000 times and record time</li>
+							<li>Remove outliers</li>
+							<li>Get statistics</li>
+						</ol>
+          </section>
+
+          <section style="
+    display: inline-block;
+    width: 118%;
+    left: -48px;
+    height: 150%;
+            ">
+<pre style="    top: -305px;">speed_invocation_arrow.js<code style="max-height: 553px;">var process = require('process');
+var json2csv = require('json2csv');
+var fs = require('fs');
+
+this.name = 'node.ninjas';
+
+// warmup
+for (var i = 1; i < 10000; i++) {
+  var fn = () => {
+    return this.name;
+  }
+}
+
+var fn = () => {
+  return this.name;
+}
+
+var diffs = [];
+var n = 5000;
+for (var i = 1; i < n; i++) {
+  var start = process.hrtime();
+
+  fn();
+
+  var diff = process.hrtime(start)[1];
+  diffs.push(diff)
+}
+
+var data = diffs.map(function(d) {
+  return { time: d };
+});
+var csv = json2csv({ data: data, fields: [ 'time' ]})
+
+fs.writeFile('speed_arrow_invocation.csv', csv, function(err) {
+    if (err) throw err;
+    console.log('file saved');
+});
+</code></pre>
+          </section>
+
+          <section style="
+              display: inline-block;
+              width: 118%;
+              left: -48px;
+              height: 150%;
+                      ">
+          <pre style="    top: -305px;">speed_invocation_bind.js<code style="max-height: 553px;">var process = require('process');
+var json2csv = require('json2csv');
+var fs = require('fs');
+
+this.name = 'node.ninjas';
+
+// warmup
+for (var i = 1; i < 10000; i++) {
+  var fn = () => {
+    return this.name;
+  }
+}
+
+var fn = function() {
+  return this.name;
+}.bind(this);
+
+var diffs = [];
+var n = 5000;
+for (var i = 1; i < n; i++) {
+  var start = process.hrtime();
+
+  fn();
+
+  var diff = process.hrtime(start)[1];
+  diffs.push(diff)
+}
+
+var data = diffs.map(function(d) {
+  return { time: d };
+});
+var csv = json2csv({ data: data, fields: [ 'time' ]})
+
+fs.writeFile('speed_bind_invocation.csv', csv, function(err) {
+    if (err) throw err;
+    console.log('file saved');
+});
+</code></pre>
+          </section>
+
+          <section>
+						<p style="font-size: 50px;">Result across multiple V8 versions</p>
+
+						<table style="font-size: 40px;">
+							<thead>
+								<th>node</th>
+								<th>V8</th>
+								<th>min</th>
+								<th>max</th>
+								<th>mean</th>
+								<th>stddev</th>
+							</thead>
+							<tbody>
+								<tr>
+									<td>v0.12.10</td>
+									<td>v3.28.71.19</td>
+									<td class="fast">704</td>
+									<td class="slow">5256</td>
+								</tr>
+								<tr>
+									<td>v4.8.1 (Argon)</td>
+									<td>v4.5.103.46</td>
+									<td class="fast">944</td>
+									<td class="slow">5496</td>
+								</tr>
+								<tr>
+									<td>v6.10.1 (Boron)</td>
+									<td>v5.1.281.95</td>
+									<td class="fast">1144</td>
+									<td class="slow">1688</td>
+								</tr>
+								<tr>
+									<td>v7.7.4</td>
+									<td>v5.5.372.42</td>
+									<td class="fast">1208</td>
+									<td class="slow">1280</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p style="
+color: #797979;
+font-size: 29px;
+text-align: right;
+margin-top: 38px;
+margin-right: 50px;">
+							Tested on macOS Sierra v10.12.3
+						</p>
+					</section>
+
+          <section>
+						<h2>Summary - Speed</h2>
+						<ul style="font-size: 49px;">
+							<li>
+                Arrow functions is faster to invoke than bound functions
+							</li>
+							<li>
+                The performance difference decreases as V8 version advances
+							</li>
+						</ul>
+					</section>
         </section>
 
+
         <section>
-          <h1>Thanks</h1>
-					<ul>
-						<li>
-							<a href="https://sungwoncho.io" target="_blank">GitHub repo with benchmarks</a>
-						</li>
-						<li>
-							<div>
-								Sung
-							</div>
-							<div>
-								<a href="https://sungwoncho.io" target="_blank">https://sungwoncho.io</a>
-							</div>
-						</li>
-					</ul>
+          <section>
+            <h1>Conclusion</h1>
+
+            <p>
+              Across all node versions, arrow functions are generally faster and use less memory
+            </p>
+          </section>
+
+          <section>
+            <h1>Thanks</h1>
+            <ul>
+              <li>
+                <a href="https://sungwoncho.io" target="_blank">GitHub repo with benchmarks</a>
+              </li>
+              <li>
+                <div>
+                  Sung
+                </div>
+                <div>
+                  <a href="https://sungwoncho.io" target="_blank">https://sungwoncho.io</a>
+                </div>
+              </li>
+            </ul>
+          </section>
         </section>
       </div>
 		</div>
