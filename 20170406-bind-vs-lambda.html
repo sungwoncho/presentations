@@ -432,9 +432,9 @@ this.name = 'node.ninjas';
 
 // warmup
 for (var i = 1; i < 10000; i++) {
-  var fn = () => {
-    return this.name;
-  }
+	var fn = function() {
+	  return this.name;
+	}.bind(this);
 }
 
 var diffs = [];
@@ -524,33 +524,33 @@ plt.show()
 								<tr>
 									<td>v0.12.10</td>
 									<td>v3.28.71.19</td>
-									<td>1068 / 560</td>
-									<td>25970 / 10072</td>
-									<td>1633 / 631</td>
+									<td><span class="slow">1068</span> / <span class="fast">560</span></td>
+									<td><span class="slow">25970</span> / <span class="fast">10072</span></td>
+									<td><span class="slow">1633</span> / <span class="fast">631</span></td>
 									<td>924 / 343</td>
 								</tr>
 								<tr>
 									<td>v4.8.1 (Argon)</td>
 									<td>v4.5.103.46</td>
-									<td>821 / 586</td>
-									<td>12506 / 10440</td>
-									<td>1290 / 814</td>
+									<td><span class="slow">821</span> / <span class="fast">586</span></td>
+									<td><span class="slow">12506</span> / <span class="fast">10440</span></td>
+									<td><span class="slow">1290</span> / <span class="fast">814</span></td>
 									<td>984 / 545</td>
 								</tr>
 								<tr>
 									<td>v6.10.1 (Boron)</td>
 									<td>v5.1.281.95</td>
-									<td>99 / 95</td>
-									<td>4512 / 3670</td>
-									<td>120 / 112</td>
+									<td><span class="slow">99</span> /<br/> <span class="fast">95</span></td>
+									<td><span class="slow">4512</span> / <span class="fast">3670</span></td>
+									<td><span class="slow">120</span> / <span class="fast">112</span></td>
 									<td>111 / 70</td>
 								</tr>
 								<tr>
 									<td>v7.7.4</td>
 									<td>v5.5.372.42</td>
-									<td>97 / 94</td>
-									<td>3947 / 3796</td>
-									<td>135 / 136</td>
+									<td><span class="slow">97</span> /<br/> <span class="fast">94</span></td>
+									<td><span class="slow">3947</span> / <span class="fast">3796</span></td>
+									<td><span class="slow">135</span> / <span class="fast">136</span></td>
 									<td>130 / 136</td>
 								</tr>
 							</tbody>
@@ -585,21 +585,19 @@ margin-right: 50px;">
     left: -48px;
     height: 150%;
             ">
-<pre style="    top: -305px;">speedn_arrow_alloc.js<code style="max-height: 553px;">var process = require('process');
+<pre style="    top: -305px;">speedn_arrow_invocation.js<code style="max-height: 553px;">var process = require('process');
 var json2csv = require('json2csv');
 var fs = require('fs');
 
 this.name = 'node.ninjas';
 
-// warmup
-for (var i = 1; i < 10000; i++) {
-  var fn = () => {
-    return this.name;
-  }
-}
-
 var fn = () => {
   return this.name;
+}
+
+// warmup
+for (var i = 1; i < 10000; i++) {
+  fn();
 }
 
 var diffs = [];
@@ -622,6 +620,7 @@ fs.writeFile('speed_arrow_invocation.csv', csv, function(err) {
     if (err) throw err;
     console.log('file saved');
 });
+
 </code></pre>
           </section>
 
@@ -631,22 +630,20 @@ fs.writeFile('speed_arrow_invocation.csv', csv, function(err) {
               left: -48px;
               height: 150%;
                       ">
-          <pre style="    top: -305px;">speed_bind_alloc.js<code style="max-height: 553px;">var process = require('process');
+          <pre style="    top: -305px;">speed_bind_invocation.js<code style="max-height: 553px;">var process = require('process');
 var json2csv = require('json2csv');
 var fs = require('fs');
 
 this.name = 'node.ninjas';
 
+var fn = (function () {
+  return this.name;
+}).bind(this);
+
 // warmup
 for (var i = 1; i < 10000; i++) {
-  var fn = () => {
-    return this.name;
-  }
+  fn();
 }
-
-var fn = function() {
-  return this.name;
-}.bind(this);
 
 var diffs = [];
 var n = 5000;
@@ -687,33 +684,33 @@ fs.writeFile('speed_bind_invocation.csv', csv, function(err) {
 								<tr>
 									<td>v0.12.10</td>
 									<td>v3.28.71.19</td>
-									<td>836 / 650</td>
-									<td>3775 / 2175</td>
-									<td>1679 / 1081</td>
+									<td><span class="slow">836</span> / <span class="fast">650</span></td>
+									<td><span class="slow">3775</span> / <span class="fast">2175</span></td>
+									<td><span class="slow">1679</span> / <span class="fast">1081</span></td>
 									<td>439 / 266</td>
 								</tr>
 								<tr>
 									<td>v4.8.1 (Argon)</td>
 									<td>v4.5.103.46</td>
-									<td>838 / 615</td>
-									<td>2351 / 1827</td>
-									<td>1111 / 1045</td>
+									<td><span class="slow">838</span> / <span class="fast">615</span></td>
+									<td><span class="slow">2351</span> / <span class="fast">1827</span></td>
+									<td><span class="slow">1111</span> / <span class="fast">1045</span></td>
 									<td>406 / 425</td>
 								</tr>
 								<tr>
 									<td>v6.10.1 (Boron)</td>
 									<td>v5.1.281.95</td>
-									<td>114 / 124</td>
-									<td>4252 / 4275</td>
-									<td>141 / 213</td>
+									<td><span class="fast">114</span> / <span class="slow">124</span></td>
+									<td><span class="fast">4252</span> / <span class="slow">4275</span></td>
+									<td><span class="fast">141</span> / <span class="slow">213</span></td>
 									<td>82 / 161</td>
 								</tr>
 								<tr>
 									<td>v7.7.4</td>
 									<td>v5.5.372.42</td>
-									<td>95 / 102</td>
-									<td>3401 / 3998</td>
-									<td>129 / 179</td>
+									<td><span class="fast">95</span> / <span class="slow">102</span></td>
+									<td><span class="fast">3401</span> / <span class="slow">3998</span></td>
+									<td><span class="fast">129</span> / <span class="slow">179</span></td>
 									<td>83 / 142</td>
 								</tr>
 							</tbody>
@@ -756,14 +753,11 @@ margin-right: 50px;">
             <h1>Thanks</h1>
             <ul>
               <li>
-                <a href="https://sungwoncho.io" target="_blank">GitHub repo with benchmarks</a>
+                <a href="https://github.com/sungwoncho/bind_vs_arrow" target="_blank">GitHub repo with benchmarks</a>
               </li>
               <li>
                 <div>
-                  Sung
-                </div>
-                <div>
-                  <a href="https://sungwoncho.io" target="_blank">https://sungwoncho.io</a>
+                  Sung - <a href="https://sungwoncho.io" target="_blank">https://sungwoncho.io</a>
                 </div>
               </li>
             </ul>
