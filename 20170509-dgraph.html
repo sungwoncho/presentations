@@ -18,7 +18,7 @@
 
 		<meta charset="utf-8">
 
-		<title>Dgraph</title>
+		<title>Using Dgraph in Rails</title>
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -35,6 +35,12 @@
     <style>
       img {
         border: none !important;
+      }
+
+      .logo {
+        width: 300px !important;
+        box-shadow: none !important;
+        vertical-align: middle !important;
       }
     </style>
 
@@ -72,9 +78,8 @@
 					<h2 style="text-transform: none;"></h2>
 					<div style="font-size: 70px; padding-top: 40px;">
 						<p>
-							<small><a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a> / <a href="http://twitter.com/mikeswcho" target="_blank">@mikeswcho</a></small>
+            <small><a href="https://sungwoncho.io" target="_blank">Sung Won Cho</a> / <a href="http://twitter.com/mikeswcho" target="_blank">@mikeswcho</a></small>
 						</p>
-
 						<p>
 							<small>Presented May 9 at <a href="https://www.meetup.com/Ruby-On-Rails-Oceania-Sydney">Ruby on Rails Sydney</a></small>
 						</p>
@@ -86,8 +91,8 @@
             <h2>Purpose</h2>
 
 						<ul>
-							<li>Refresh our perspective</li>
-							<li>Demo solution</li>
+							<li>Introduce graph database</li>
+							<li>Demo Rails solution</li>
 							<li>Share things I learned</li>
 						</ul>
           </section>
@@ -96,10 +101,10 @@
             <h2>Structure</h2>
 
 						<ol style="width: 388px;">
-							<li>Graph databases</li>
-							<li>GraphQL+-</li>
-							<li>Demo</li>
-							<li>Lessons</li>
+							<li>Graph database</li>
+							<li>Dgraph</li>
+							<li>Rails Demo</li>
+							<li>What I Learned</li>
 						</ol>
           </section>
         </section>
@@ -107,48 +112,191 @@
 				<section style="font-size: 140%;">
 					<section>
 						<h2>Graph database</h2>
+
+            <ul>
+              <li>Nodes and edges</li>
+              <li>Edge traverals</li>
+              <li>Key-value lookups</li>
+            </ul>
 					</section>
+
+          <section>
+            <h2 style="font-size: 99%">Facebook Open Graph</h2>
+            <img src="assets/fbog.png" alt="open-graph" />
+          </section>
+
+          <section>
+            <h2 style="font-size: 99%">Google Knowlege Graph</h2>
+            <img src="assets/gkg.jpg" alt="knowldge-graph" />
+          </section>
+
+          <section>
+            <h2>Why?</h2>
+            <p>
+              Faster and more natural
+            </p>
+
+            <ul style="font-size: 90%;">
+              <li>Newsfeeds</li>
+              <li>Recommendation engines</li>
+              <li>Anomaly detection</li>
+            </ul>
+          </section>
 				</section>
 
-        <section style="font-size: 140%;">
+        <section>
+          <section>
+            <h2 style="text-transform: none;">Dgraph</h2>
+
+            <ul>
+              <li>Open source graph database</li>
+              <li>Fastest in the market <a href="https://open.dgraph.io/post/benchmark-neo4j/">(benchmark)</a></li>
+              <li>The only scalable, native solution</li>
+              <li>Proudly made in Sydney</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Scalable</h2>
+
+            <ul>
+              <li>Sharded</li>
+              <li>Consistent (RAFT)</li>
+              <li>Highly available</li>
+              <li>Highly concurrent</li>
+            </ul>
+
+          </section>
+
+          <section>
+            <h2>GraphQL+-</h2>
+
+<pre><code>{
+  user as var(id: u1)
+
+  question(id: u1) {
+    _uid_
+    question_body
+    question_title
+    answer(first: 10) @filter(gt(count(answer_body), 0)) {
+      _uid_
+      answer_body
+      ~upvoted @filter(var(user)) {
+        user_name
+      }
+      count(~upvoted)
+    }
+  }
+}
+</code></pre>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Using in Rails</h2>
+
+            <p>
+              Graphoverflow
+            </p>
+          </section>
+        </section>
+        
+        <section>
 					<section>
-						<h1>Lessons</h1>
+						<h2>Lessons</h2>
 
 						<p>Using Dgraph in Rails</p>
 					</section>
 
 					<section>
-						<h2>
+						<h3>
 							No ActiveRecord
-						</h2>
+						</h3>
+					</section>
+
+          <section>
+            <p>Deal with raw JSON</p>
+<pre><code>class QuestionsController < ApplicationController
+  def index
+    query = %q(
+{
+  ...
+}
+)
+    client = ::DgraphClient.new()
+    json = client.do(query)
+
+    @questions = json.fetch(:questions, [])
+  end
+
+</code></pre>
+          </section>
+
+					<section>
+            <h3>Not resource-oriented</h3>
+
+<pre><code><%= link_to "Show", controller: 'questions',
+             action: 'show', id: question[:_uid_] %>
+</code></pre>
+
+vs.
+
+<pre><code><%= link_to "Show", @question %></code></pre>
+					</section>
+
+          <section>
+						<h3>
+              HTTP client only
+						</h3>
 					</section>
 
 					<section>
-						<p>Nodes do not have types in Dgraph</p>
-					</section>
-
-					<section>
-						<h2>
-							Not 'resource oriented'
-						</h2>
-					</section>
-
-					<section>
-						show link_to and form examples
-					</section>
-
-					<section>
-						<h2>
+						<h3>
 							Get complex data in a single query
-						</h2>
+						</h3>
+
+            <p>Built-in to DB, unlike GraphQL</p>
 					</section>
 
-					<section>
-						<h2>
-							Fastest graph database in the world
-						</h2>
+          <section>
+						<h3>
+              Fastest, scalable for anyone
+						</h3>
+
+            <p>
+              We want to democratize scalable DB solutions
+            </p>
 					</section>
+
         </section>
+
+        <section>
+          <section>
+						<img src="assets/sung.jpeg" alt="" style="border-radius: 100%; width: 250px;">
+						<p style="    margin-top: 24px;
+			font-size: 38px;
+			margin-bottom: 0;">Sung</p>
+						<ul style="list-style: none;">
+							<li>
+								<a href="https://sungwoncho.io">sungwoncho.io</a>
+							</li>
+							<li>
+								<a href="https://twitter.com/mikeswvho">@mikeswcho</a>
+							</li>
+						</ul>
+					</section>
+
+          <section>
+            <h2>Thanks</h2>
+             <img src="assets/rails.png" alt="rails" class="logo"> <i class="fa fa-plus"></i> <img src="assets/dgraph2.png" alt="dgraph" class="logo" /> <span class="eq" style="font-size: 80px;
+    vertical-align: middle;
+    padding: 30px;">=</span> <i class="fa fa-heart" style="font-size: 157px;
+    vertical-align: middle;
+    color: #d83838;"></i>
+          </section>
+        </section>
+
       </div>
 		</div>
 
