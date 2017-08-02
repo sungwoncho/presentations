@@ -359,6 +359,109 @@ codeSpace(code);
 const machine = new Machine(codeSpace(hello));
 machine.run();</code></pre>
 				</section>
+
+				<section>
+					<pre><code>function Machine(codeSpace) {
+  this.cursor = new Cursor(0, 0, 0, 1);
+  this.run = run() { /* run */ };
+  this.step = function() { /* step */ };
+}</code></pre>
+				</section>
+
+				<section>
+					<img src="assets/aheui.gif" alt="">
+				</section>
+
+				<section>
+					<h2>Cursor</h2>
+				</section>
+
+				<section>
+					<pre><code>function Cursor(x, y, xSpeed, ySpeed) {
+  this.x = x;
+  this.y = y;
+  this.xSpeed = xSpeed;
+  this.ySpeed = ySpeed;
+
+  this.move = function(codeSpace) { /* move */ }
+  this.reflect = function() { /* reflect */ }
+  this.turn = function() { /* turn */ }
+}</code></pre>
+				</section>
+
+				<section>
+					<h2>Move</h2>
+				</section>
+
+				<section>
+					<img src="assets/aheui2.gif" alt="">
+				</section>
+
+				<section>
+					<pre><code>this.move = function(codeSpace) {
+  this.x += this.xSpeed;
+  this.y += this.ySpeed;
+
+  var line = codeSpace[this.y];
+  var width = line ? line.length : 0;
+  if (this.x >= width &amp;&amp; this.xSpeed > 0) {
+    this.x = 0;
+  }
+  // ...
+}
+					</code></pre>
+				</section>
+
+				<section>
+					<h2>Reflect</h2>
+				</section>
+
+				<section>
+					<pre><code>this.reflect = function() {
+  this.xSpeed = -this.xSpeed;
+  this.ySpeed = -this.ySpeed;
+}</code></pre>
+				</section>
+
+				<section>
+					<h2>Back to machine</h2>
+				</section>
+
+				<section>
+<pre><code>function Machine(codeSpace) {
+  this.cursor = new Cursor(0, 0, 0, 1);
+  this.run = run() { /* run */ };
+  this.step = function() { /* step */ };
+}</code></pre>
+				</section>
+
+				<section>
+<pre><code>this.run = function() {
+  this.terminated = false;
+  while (!this.terminated) {
+    this.step();
+  }
+
+  var result = this.storage.pop() || 0;
+  return result;
+}</code></pre>
+				</section>
+
+				<section>
+<pre><code>this.step = function () {
+  var code = cursor.point(codeSpace);
+
+  //
+  // perform instruction
+  //
+
+  if (!this.terminated) {
+    cursor.move(codeSpace);
+  }
+}</code></pre>
+				</section>
+
+
       </div>
 		</div>
 
