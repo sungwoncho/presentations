@@ -363,7 +363,7 @@ machine.run();</code></pre>
 				<section>
 					<pre><code>function Machine(codeSpace) {
   this.cursor = new Cursor(0, 0, 0, 1);
-  this.run = run() { /* run */ };
+  this.run = function() { /* run */ };
   this.step = function() { /* step */ };
 }</code></pre>
 				</section>
@@ -430,13 +430,13 @@ machine.run();</code></pre>
 				<section>
 <pre><code>function Machine(codeSpace) {
   this.cursor = new Cursor(0, 0, 0, 1);
-  this.run = run() { /* run */ };
+  this.run = function() { /* run */ };
   this.step = function() { /* step */ };
 }</code></pre>
 				</section>
 
 				<section>
-<pre><code>this.run = function() {
+<pre><code>this.run = function () {
   this.terminated = false;
   while (!this.terminated) {
     this.step();
@@ -461,7 +461,98 @@ machine.run();</code></pre>
 }</code></pre>
 				</section>
 
+				<section>
+					<h2>Instruction</h2>
 
+					<ul>
+						<li>Change direction</li>
+						<li>Arithmatic</li>
+						<li>Manipulate storage</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Example</h2>
+					<pre style="line-height: inherit;">ex.aheui<code style="font-size: 82px;">밯망희</code></pre>
+				</section>
+
+				<section>
+					Takes a UTF-8 character and returns UTF-8 code point value
+				</section>
+
+				<section>
+					<h2>
+						밯 = <span style="color: blue;">ㅂ</span> + <span style="color: red;">ㅏ</span> + <span style="color: green;">ㅎ</span>
+					</h2>
+
+					<hr>
+
+					<p>
+						<span style="color: blue;">ㅂ</span> - Push to current storage
+					</p>
+					<p>
+						<span style="color: red;">ㅏ</span> - Move to right
+					</p>
+					<p>
+						<span style="color: green;">ㅎ</span> - Receive a UTF-8 character
+					</p>
+				</section>
+
+				<section>
+					<h2>
+						망 = <span style="color: blue;">ㅁ</span> + <span style="color: red;">ㅏ</span> + <span style="color: green;">ㅇ</span>
+					</h2>
+
+					<hr>
+
+					<p>
+						<span style="color: blue;">ㅂ</span> - Pop
+					</p>
+					<p>
+						<span style="color: red;">ㅏ</span> - Move to right
+					</p>
+					<p>
+						<span style="color: green;">ㅇ</span> - Noop
+					</p>
+				</section>
+
+				<section>
+					<h2>
+						희 = <span style="color: blue;">ㅎ</span> + <span style="color: red;">ㅢ</span>
+					</h2>
+
+					<hr>
+
+					<p>
+						<span style="color: blue;">ㅎ</span> - Terminate. <br/>(Pop from the current storage and return it to OS)
+					</p>
+					<p>
+						<span style="color: red;">ㅢ</span> - Reflect cursor
+					</p>
+				</section>
+
+				<section>
+					<h2>There's More</h2>
+
+					<ul>
+						<li>With JIT - <a href="https://github.com/aheui/rpaheui">rpaheui</a></li>
+						<li>Go - <a href="https://github.com/aheui/goaheui">goaheui</a></li>
+						<li>Aheui interpreter written in aheui - <a href="https://github.com/aheui/goaheui">aheui.aheui</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Links</h2>
+
+					<ul>
+						<li><a href="http://aheui.github.io/specification.en">Aheui specification</a></li>
+						<li><a href="https://esolangs.org/wiki/Language_list">Language list</a></li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>End</h2>
+				</section>
       </div>
 		</div>
 
