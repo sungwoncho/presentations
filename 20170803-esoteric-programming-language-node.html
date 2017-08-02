@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+		if (location.hostname.indexOf("github.io") > -1) {
+  (function(i, s, o, g, r, a, m) {
+    i["GoogleAnalyticsObject"] = r;
+    (i[r] =
+      i[r] ||
+      function() {
+        (i[r].q = i[r].q || []).push(arguments);
+      }), (i[r].l = 1 * new Date());
+    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(
+    window,
+    document,
+    "script",
+    "https://www.google-analytics.com/analytics.js",
+    "ga"
+  );
+
+  ga("create", "UA-55773666-12", "auto");
+  ga("send", "pageview");
+}
+</script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Aheui - Interpreting an Esoteric Programming Language in Node.js</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+		var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = window.location.search.match(/print-pdf/gi)
+  ? "css/print/pdf.css"
+  : "css/print/paper.css";
+document.getElementsByTagName("head")[0].appendChild(link);
+</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 2em !important;
+		}
+		h2 {
+	    font-size: 1.3em !important;
+	    margin-bottom: 130px;
+		}
+		pre {
+	    font-size: 26px !important;
+		}
+		.fast {
+	    background: #d1ffd1;
+		}
+		.slow {
+			background: #ffd5d5;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+					<h1 style="font-size: 67px !important">Aheui</h1>
+					<h2>Esoteric Programming Language in Node.js</h2>
+				</section>
+
+				<section>
+					<img src="assets/sung.jpeg" alt="" style="border-radius: 100%; width: 283px;" />
+					<div>
+						<div>Sung</div>
+						<div>
+							<a href="https://sung.io">sung.io</a>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<p>Interpreting Aheui code in node.js</p>
+				</section>
+
+				<section>
+					<ol>
+						<li>Definition</li>
+						<li>Korean Primer</li>
+						<li>Aheui spec</li>
+						<li>Code</li>
+					</ol>
+				</section>
+
+				<section>
+					<h1>Definition</h1>
+				</section>
+
+				<section>
+					<b>esoteric</b>
+					<p>
+						understood by only a small number of people
+					</p>
+				</section>
+
+				<section>
+<h2>ArnoldC</h2>
+<pre>hello.arnoldc<code>IT'S SHOWTIME
+TALK TO THE HAND "hello world"
+YOU HAVE BEEN TERMINATED</code></pre>
+
+<pre><code>java -jar ArnoldC.jar hello.arnoldc
+java hello
+</code></pre>
+				</section>
+
+				<section>
+					<h2>Shakespeare Programming Language</h2>
+
+<pre>hello.spl<code>The Infamous Hello World Program.
+
+Romeo, a young man with a remarkable patience.
+Juliet, a likewise young woman of remarkable grace.
+Ophelia, a remarkable woman much in dispute with Hamlet.
+Hamlet, the flatterer of Andersen Insulting A/S.
+
+
+                    Act I: Hamlet's insults and flattery.
+
+                    Scene I: The insulting of Romeo.
+
+[Enter Hamlet and Romeo]
+
+Hamlet:
+ You lying stupid fatherless big smelly half-witted coward!
+ You are as stupid as the difference between a handsome rich brave
+ hero and thyself! Speak your mind!
+
+ You are as brave as the sum of your fat little stuffed misused dusty
+ old rotten codpiece and a beautiful fair warm peaceful sunny summer's
+ day. You are as healthy as the difference between the sum of the
+ sweetest reddest rose and my father and yourself! Speak your mind!
+
+ You are as cowardly as the sum of yourself and the difference
+ between a big mighty proud kingdom and a horse. Speak your mind.
+
+ Speak your mind!
+
+[Exit Romeo]
+
+                    Scene II: The praising of Juliet.
+
+[Enter Juliet]
+
+Hamlet:
+ Thou art as sweet as the sum of the sum of Romeo and his horse and his
+ black cat! Speak thy mind!
+
+[Exit Juliet]
+
+                    Scene III: The praising of Ophelia.
+
+[Enter Ophelia]
+
+Hamlet:
+ Thou art as lovely as the product of a large rural town and my amazing
+ bottomless embroidered purse. Speak thy mind!
+
+ Thou art as loving as the product of the bluest clearest sweetest sky
+ and the sum of a squirrel and a white horse. Thou art as beautiful as
+ the difference between Juliet and thyself. Speak thy mind!
+
+[Exeunt Ophelia and Hamlet]
+
+
+                    Act II: Behind Hamlet's back.
+
+                    Scene I: Romeo and Juliet's conversation.
+
+[Enter Romeo and Juliet]
+
+Romeo:
+ Speak your mind. You are as worried as the sum of yourself and the
+ difference between my small smooth hamster and my nose. Speak your
+ mind!
+
+Juliet:
+ Speak YOUR mind! You are as bad as Hamlet! You are as small as the
+ difference between the square of the difference between my little pony
+ and your big hairy hound and the cube of your sorry little
+ codpiece. Speak your mind!
+
+[Exit Romeo]
+
+                    Scene II: Juliet and Ophelia's conversation.
+
+[Enter Ophelia]
+
+Juliet:
+ Thou art as good as the quotient between Romeo and the sum of a small
+ furry animal and a leech. Speak your mind!
+
+Ophelia:
+ Thou art as disgusting as the quotient between Romeo and twice the
+ difference between a mistletoe and an oozing infected blister! Speak
+ your mind!
+
+[Exeunt]
+</code></pre>
+				</section>
+
+				<section>
+<h2>Brainfuck</h2>
+<pre><code>++++++++++[>+++++++>++++++++++>+++>+<<<<-]>++.>+.+++++++..+++.>++.<<+++++++++++++++.>.+++.------.--------.>+.>.</code></pre>
+				</section>
+
+				<section>
+<h2>Aheui</h2>
+<pre><code>밤밣따빠밣밟따뿌
+빠맣파빨받밤뚜뭏
+돋밬탕빠맣붏두붇
+볻뫃박발뚷투뭏붖
+뫃도뫃희멓뭏뭏붘
+뫃봌토범더벌뿌뚜
+뽑뽀멓멓더벓뻐뚠
+뽀덩벐멓뻐덕더벅</code></pre>
+				</section>
+
+				<section>
+					<h1>Korean Primer</h1>
+				</section>
+
+				<section>
+					<img style="width: 100%; box-shadow: none;" src="assets/hangul-basic.jpg" alt="">
+				</section>
+
+				<section>
+					<ul>
+						<li>19 consonant, 21 vowels</li>
+						<li>Not sequential. Grouped into blocks.</li>
+					</ul>
+				</section>
+
+				<section style="font-size: 91px;">
+					<p>
+						<span style="color: blue;">ㄴ</span> + <span style="color: red;">ㅗ</span> = <b>노</b>
+					</p>
+					<p>
+						<span style="color: blue;">ㄷ</span> + <span style="color: red;">ㅡ</span> = <b>드</b>
+					</p>
+
+					<hr>
+
+					<p>
+						노드
+					</p>
+				</section>
+
+				<section>
+					
+				</section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: "slide", // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    {
+      src: "lib/js/classList.js",
+      condition: function() {
+        return !document.body.classList;
+      }
+    },
+    {
+      src: "plugin/markdown/marked.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/markdown/markdown.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/highlight/highlight.js",
+      async: true,
+      condition: function() {
+        return !!document.querySelector("pre code");
+      },
+      callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    },
+    { src: "plugin/zoom-js/zoom.js", async: true },
+    { src: "plugin/notes/notes.js", async: true }
+  ]
+});
+</script>
+
+	</body>
+</html>
