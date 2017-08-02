@@ -114,8 +114,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 					<ol>
 						<li>Definition</li>
 						<li>Korean Primer</li>
-						<li>Aheui spec</li>
-						<li>Code</li>
+						<li>Aheui</li>
 					</ol>
 				</section>
 
@@ -284,7 +283,81 @@ Ophelia:
 				</section>
 
 				<section>
-					
+					<h1>Aheui</h1>
+				</section>
+
+				<section>
+					<h2>Naheui - node.js Aheui interpretor</h2>
+					<pre>hello.aheui<code>밤밣따빠밣밟따뿌
+밤밣따빠밣밟따뿌
+빠맣파빨받밤뚜뭏
+돋밬탕빠맣붏두붇
+볻뫃박발뚷투뭏붖
+뫃도뫃희멓뭏뭏붘
+뫃봌토범더벌뿌뚜
+뽑뽀멓멓더벓뻐뚠
+뽀덩벐멓뻐덕더벅</code></pre>
+
+					<pre><code>$ npm install -g naheui
+$ naheui hello.aheui
+Hello, world!</code></pre>
+				</section>
+
+				<section>
+					<img src="assets/aheui.gif" alt="">
+				</section>
+
+				<section>
+					<h2>Code</h2>
+				</section>
+
+				<section>
+					<h1><span style="color: blue;">ㄴ</span> + <span style="color: red;">ㅗ</span> = <b>노</b></h1>
+					<pre><code style="    font-size: 32px;
+    line-height: 57px;">code('노');
+// => { initial: 88, middle: 21, end: -1, ... }</code></pre>
+				</section>
+
+				<section>
+					<img src="assets/aheui1.png" alt="">
+				</section>
+
+				<section>
+					<h2>Codespace</h2>
+				</section>
+
+				<section>
+					<img src="assets/aheui.gif" alt="">
+				</section>
+
+				<section>
+<pre><code>const code = `노드
+노드`;
+
+codeSpace(code);
+</code></pre>
+
+<pre><code>[
+  [ { ... }, { ... } ],
+  [ { ... }, { ... } ]
+]
+</code></pre>
+				</section>
+
+				<section>
+					<img style="    width: 100%;" src="assets/aheui2.png" alt="">
+				</section>
+
+				<section>
+					<h2>Virtual machine</h2>
+				</section>
+
+				<section>
+					<pre><code>const hello = `노드
+노드`;
+
+const machine = new Machine(codeSpace(hello));
+machine.run();</code></pre>
 				</section>
       </div>
 		</div>
