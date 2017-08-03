@@ -123,6 +123,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
+					<h2>Structure</h2>
 					<ol style="    width: 278px;">
 						<li>Definition</li>
 						<li>Korean Primer</li>
@@ -331,7 +332,27 @@ Hello, world!</code></pre>
 				</section>
 
 				<section>
-					<img src="assets/aheui1.png" alt="">
+					<pre><code>function code(char) {
+  if (validate(char)) {
+    return {
+      initial: getInitial(char),
+      middle: getMiddle(char),
+      end: getEnd(char)
+    };
+  }
+
+  return { initial: -1, middle: -1, end: -1 };
+}</code></pre>
+				</section>
+
+				<section>
+					<pre><code>function getInitial(char) {
+  const startChar = '가';
+  const syllableCode =
+    char.charCodeAt() - startChar.charCodeAt();
+
+  return (syllableCode / 588) | 0;
+}</code></pre>
 				</section>
 
 				<section>
@@ -343,10 +364,11 @@ Hello, world!</code></pre>
 				</section>
 
 				<section>
-<pre><code>const code = `노드
+<pre><code>const str =
+`노드
 노드`;
 
-codeSpace(code);
+codeSpace(str);
 </code></pre>
 
 <pre><code>[
@@ -357,7 +379,13 @@ codeSpace(code);
 				</section>
 
 				<section>
-					<img style="    width: 100%;" src="assets/aheui2.png" alt="">
+					<pre><code>function codeSpace(sourceCode) {
+  return sourceCode.split(/\r?\n/g).map(function (line) {
+    return line.split('').map(function (char) {
+      return code(char);
+    });
+  });
+}</code></pre>
 				</section>
 
 				<section>
@@ -365,16 +393,19 @@ codeSpace(code);
 				</section>
 
 				<section>
-					<pre><code>const hello = `노드
+					<pre><code>const str =
+`노드
 노드`;
 
-const machine = new Machine(codeSpace(hello));
+const machine = new Machine(codeSpace(str));
 machine.run();</code></pre>
 				</section>
 
 				<section>
 					<pre><code>function Machine(codeSpace) {
+  this.terminated = false;
   this.cursor = new Cursor(0, 0, 0, 1);
+
   this.run = function() { /* run */ };
   this.step = function() { /* step */ };
 }</code></pre>
@@ -493,6 +524,10 @@ machine.run();</code></pre>
 				</section>
 
 				<section>
+					<img src="assets/aheui3.gif" alt="">
+				</section>
+
+				<section>
 					<h2>
 						밯 = <span style="color: blue;">ㅂ</span> + <span style="color: red;">ㅏ</span> + <span style="color: green;">ㅎ</span>
 					</h2>
@@ -547,7 +582,7 @@ machine.run();</code></pre>
 					<h2>There's More</h2>
 
 					<ul>
-						<li>With JIT - <a href="https://github.com/aheui/rpaheui">rpaheui</a></li>
+						<li>With JIT compiler - <a href="https://github.com/aheui/rpaheui">rpaheui</a></li>
 						<li>Go - <a href="https://github.com/aheui/goaheui">goaheui</a></li>
 						<li>Aheui interpreter written in aheui - <a href="https://github.com/aheui/goaheui">aheui.aheui</a></li>
 					</ul>
