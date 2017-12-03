@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+		if (location.hostname.indexOf("github.io") > -1) {
+  (function(i, s, o, g, r, a, m) {
+    i["GoogleAnalyticsObject"] = r;
+    (i[r] =
+      i[r] ||
+      function() {
+        (i[r].q = i[r].q || []).push(arguments);
+      }), (i[r].l = 1 * new Date());
+    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(
+    window,
+    document,
+    "script",
+    "https://www.google-analytics.com/analytics.js",
+    "ga"
+  );
+
+  ga("create", "UA-55773666-12", "auto");
+  ga("send", "pageview");
+}
+</script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Async, await and control flow</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+		var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = window.location.search.match(/print-pdf/gi)
+  ? "css/print/pdf.css"
+  : "css/print/paper.css";
+document.getElementsByTagName("head")[0].appendChild(link);
+</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 2em !important;
+		}
+		h2 {
+	    font-size: 1.3em !important;
+	    margin-bottom: 130px;
+		}
+		pre {
+	    font-size: 26px !important;
+		}
+		.fast {
+	    background: #d1ffd1;
+		}
+		.slow {
+			background: #ffd5d5;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+					<h1 style="font-size: 67px !important">Async, await and control flow</h1>
+				</section>
+
+				<section>
+					<img src="assets/sung.jpeg" alt="" style="border-radius: 100%; width: 283px;" />
+					<div>
+						<div>Sung</div>
+						<div>
+							<a href="https://sung.io">sung.io</a>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Control flow when using async & await</h2>
+				</section>
+
+				<section>
+					<h2>
+						Agenda
+					</h2>
+					<ul>
+						<li>Concurrency</li>
+						<li>Inside callback</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>
+						await suspends the current async function's evaluation, including all control structures.
+					</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function httpGet(url) {
+  const content = await fetch(url);
+
+  console.log(content);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<h1>Concurrency</h1>
+				</section>
+
+				<section>
+					<ol>
+						<li>Sequential</li>
+						<li>Concurrent</li>
+					</ol>
+				</section>
+
+				<section>
+					<h2>Example 1</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData() {
+  const res1 = await fetch('http://my.api/1');
+  const res2 = await fetch('http://my.api/2');
+
+  // do work
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData() {
+  const [res1, res2] = await Promise.all(
+    fetch('http://my.api/1'),
+    fetch('http://my.api/2')
+  );
+
+  // do work
+}
+</code></pre>
+				</section>
+
+				<section>
+					<h2>Example 2</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function doSteps() {
+  const [res1, res2] = await Promise.all(
+    httpPost('http://my.api/step1'),
+    httpPost('http://my.api/step2')
+  );
+
+  // do work
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function doSteps() {
+  const res1 = httpPost('http://my.api/step1');
+  const res2 = httpPost('http://my.api/step2');
+
+  // do something
+}
+</code></pre>
+				</section>
+
+				<section>
+					<h2>Example 3</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function attack(url) {
+  while(true) {
+    await fetch(url)
+  }
+}
+</code></pre>
+				</section>
+
+				<section>
+					<h2>
+						await suspends the current async function's evaluation, <u>including all control structures</u>.
+					</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function attack(url) {
+  while(true) {
+    fetch(url)
+  }
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>function attack(url) {
+  while(true) {
+    fetch(url)
+  }
+}
+</code></pre>
+				</section>
+
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: "slide", // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    {
+      src: "lib/js/classList.js",
+      condition: function() {
+        return !document.body.classList;
+      }
+    },
+    {
+      src: "plugin/markdown/marked.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/markdown/markdown.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/highlight/highlight.js",
+      async: true,
+      condition: function() {
+        return !!document.querySelector("pre code");
+      },
+      callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    },
+    { src: "plugin/zoom-js/zoom.js", async: true },
+    { src: "plugin/notes/notes.js", async: true }
+  ]
+});
+</script>
+
+	</body>
+</html>
