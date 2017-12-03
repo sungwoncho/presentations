@@ -234,6 +234,109 @@ document.getElementsByTagName("head")[0].appendChild(link);
 </code></pre>
 				</section>
 
+				<section>
+					<h1>Inside a Callback</h1>
+				</section>
+
+				<section>
+					<ol>
+						<li>forEach</li>
+						<li>map</li>
+					</ol>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  urls.forEach(url => {
+    const data = await fetch(url);
+    console.log(data);
+  })
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  urls.forEach(async (url) => {
+    const data = await fetch(url);
+    console.log(data);
+  })
+}
+</code></pre>
+				</section>
+
+				<section>
+					<p>forEach is synchronous but callback is asynchronous</p>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  for (url of urls) {
+    const data = await fetch(url);
+    console.log(data);
+  }
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  for (let i = 0; i < urls.length; i++) {
+    const url = urls[i];
+    const data = await fetch(url);
+    console.log(data);
+  }
+}
+</code></pre>
+				</section>
+
+				<section>
+					<h2>Concurrent version</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  for (url of urls) {
+    const data = await fetch(url);
+    console.log(data);
+  }
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  await Promise.all(promises);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  return Promise.all(promises);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>function showData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  return Promise.all(promises);
+}
+</code></pre>
+				</section>
+
       </div>
 		</div>
 
