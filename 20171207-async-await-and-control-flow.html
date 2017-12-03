@@ -246,6 +246,10 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
+					<h2>forEach</h2>
+				</section>
+
+				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
   urls.forEach(url => {
     const data = await fetch(url);
@@ -335,6 +339,107 @@ document.getElementsByTagName("head")[0].appendChild(link);
   return Promise.all(promises);
 }
 </code></pre>
+				</section>
+
+				<section>
+					<h2>map</h2>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+  return urls.map(url => {
+    const content = await fetch(url);
+    return content;
+  })
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+  return urls.map(async (url) => {
+    const content = await fetch(url);
+    return content;
+  })
+}
+</code></pre>
+				</section>
+
+				<section>
+					<p>map is synchronous but its callback is asynchronous</p>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+  const promises = urls.map(async (url) => {
+    const content = await fetch(url);
+    return content;
+  });
+
+  return await Promise.all(promises);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  return await Promise.all(promises);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  return Promise.all(promises);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>function getData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  return Promise.all(promises);
+}
+</code></pre>
+				</section>
+
+				<section>
+					<h2>Async, await and control flow</h2>
+					<ul>
+						<li>Concurrency</li>
+						<li>Inside callback</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>
+						await suspends the current async function's evaluation, including all control structures.
+					</h2>
+				</section>
+
+				<section>
+					<img src="assets/sung.jpeg" alt="" style="border-radius: 100%; width: 283px;" />
+					<div>
+						<div>Sung</div>
+						<div>
+							<a href="https://sung.io">sung.io</a>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>End</h2>
 				</section>
 
       </div>
