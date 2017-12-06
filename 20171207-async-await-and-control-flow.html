@@ -110,18 +110,30 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<h2>
-						Agenda
-					</h2>
-					<ul>
-						<li>Concurrency</li>
-						<li>Inside callback</li>
-					</ul>
+					<h2>Structure</h2>
+					<ol>
+						<li>
+							Look at code
+						</li>
+						<li>
+							Fix it
+						</li>
+					</ol>
 				</section>
 
 				<section>
 					<h2>
-						await suspends the current async function's evaluation, including all control structures.
+						Content
+					</h2>
+					<ol>
+						<li>Concurrency</li>
+						<li>Inside a callback</li>
+					</ol>
+				</section>
+
+				<section>
+					<h2>
+						await suspends the current async function, including all control structures.
 					</h2>
 				</section>
 
@@ -135,7 +147,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<h1>Concurrency</h1>
+					<h1>1. Concurrency</h1>
 				</section>
 
 				<section>
@@ -150,23 +162,23 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData() {
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function printData() {
   const res1 = await fetch('http://my.api/1');
   const res2 = await fetch('http://my.api/2');
 
-  // do work
+  console.log(res1, res2);
 }
 </code></pre>
 				</section>
 
 				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData() {
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function printData() {
   const [res1, res2] = await Promise.all(
     fetch('http://my.api/1'),
     fetch('http://my.api/2')
   );
 
-  // do work
+  console.log(res1, res2);
 }
 </code></pre>
 				</section>
@@ -176,23 +188,25 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function doSteps() {
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function doWork() {
   const [res1, res2] = await Promise.all(
-    httpPost('http://my.api/step1'),
-    httpPost('http://my.api/step2')
+    httpPost('http://my.api/begin'),
+    httpPost('http://my.api/finish')
   );
 
-  // do work
+  console.log(res1, res2);
 }
 </code></pre>
 				</section>
 
 				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function doSteps() {
-  const res1 = httpPost('http://my.api/step1');
-  const res2 = httpPost('http://my.api/step2');
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function doWork() {
+  const res1 =
+    await httpPost('http://my.api/begin');
+  const res2 =
+    await httpPost('http://my.api/finish');
 
-  // do something
+  console.log(res1, res2);
 }
 </code></pre>
 				</section>
@@ -212,12 +226,21 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<h2>
-						await suspends the current async function's evaluation, <u>including all control structures</u>.
+						await suspends the current async function, <u>including all control structures.</u>
 					</h2>
 				</section>
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function attack(url) {
+  while(true) {
+    await fetch(url) //
+  }
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function attack(url) { //
   while(true) {
     fetch(url)
   }
@@ -235,7 +258,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<h1>Inside a Callback</h1>
+					<h1>2. Inside a Callback</h1>
 				</section>
 
 				<section>
@@ -251,7 +274,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
-  urls.forEach(url => {
+  urls.forEach(url => { //
     const data = await fetch(url);
     console.log(data);
   })
@@ -261,7 +284,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
-  urls.forEach(async (url) => {
+  urls.forEach(async (url) => { //
     const data = await fetch(url);
     console.log(data);
   })
@@ -275,12 +298,26 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  urls.forEach(async (url) => { //
+    const data = await fetch(url);
+    console.log(data);
+  })
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
   for (url of urls) {
     const data = await fetch(url);
     console.log(data);
   }
 }
 </code></pre>
+				</section>
+
+				<section>
+					<p>Regular for-loop works too</p>
 				</section>
 
 				<section>
@@ -300,7 +337,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
-  for (url of urls) {
+  for (url of urls) { //
     const data = await fetch(url);
     console.log(data);
   }
@@ -314,13 +351,13 @@ document.getElementsByTagName("head")[0].appendChild(link);
     return fetch(url);
   });
 
-  await Promise.all(promises);
+  await Promise.all(promises); //
 }
 </code></pre>
 				</section>
 
 				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) { //
   const promises = urls.map(url => {
     return fetch(url);
   });
@@ -347,17 +384,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
-  return urls.map(url => {
-    const content = await fetch(url);
-    return content;
-  })
-}
-</code></pre>
-				</section>
-
-				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
-  return urls.map(async (url) => {
+  return urls.map(url => { //
     const content = await fetch(url);
     return content;
   })
@@ -371,8 +398,18 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
 				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
-  const promises = urls.map(async (url) => {
+  return urls.map(async (url) => { //
     const content = await fetch(url);
+    return content;
+  })
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+  const promises = urls.map(async (url) => {
+    const content = await fetch(url); //
     return content;
   });
 
@@ -387,13 +424,13 @@ document.getElementsByTagName("head")[0].appendChild(link);
     return fetch(url);
   });
 
-  return await Promise.all(promises);
+  return await Promise.all(promises); //
 }
 </code></pre>
 				</section>
 
 				<section>
-					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) {
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function getData(urls) { //
   const promises = urls.map(url => {
     return fetch(url);
   });
@@ -415,27 +452,19 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<h2>Async, await and control flow</h2>
-					<ul>
-						<li>Concurrency</li>
-						<li>Inside callback</li>
-					</ul>
-				</section>
-
-				<section>
 					<h2>
-						await suspends the current async function's evaluation, including all control structures.
+						await suspends the current async function, including all control structures.
 					</h2>
 				</section>
 
 				<section>
-					<img src="assets/sung.jpeg" alt="" style="border-radius: 100%; width: 283px;" />
-					<div>
-						<div>Sung</div>
-						<div>
-							<a href="https://sung.io">sung.io</a>
-						</div>
-					</div>
+					<h2>Credit</h2>
+
+					<ul>
+						<li>
+							<a href="http://exploringjs.com/es2016-es2017.html" target="_blank">Exploring ES2016 and ES2017</a> - Dr. Axel Rauschmayer
+						</li>
+					</ul>
 				</section>
 
 				<section>
