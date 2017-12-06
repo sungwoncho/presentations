@@ -184,6 +184,13 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
+					<p>await - <b>sequential</b></p>
+					<p>
+						Promise.all() - <b>concurrent</b>;
+					</p>
+				</section>
+
+				<section>
 					<h2>Example 2</h2>
 				</section>
 
@@ -346,6 +353,13 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
+					<p>await - <b>sequential</b></p>
+					<p>
+						Promise.all() - <b>concurrent</b>
+					</p>
+				</section>
+
+				<section>
 					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
   const promises = urls.map(url => {
     return fetch(url);
@@ -354,6 +368,53 @@ document.getElementsByTagName("head")[0].appendChild(link);
   await Promise.all(promises); //
 }
 </code></pre>
+				</section>
+
+				<section>
+					<h2>return in async</h2>
+				</section>
+
+				<section>
+					<p>An async function returns a promise 'p'</p>
+				</section>
+
+				<section>
+					<h2>Return value</h2>
+					<ul>
+						<li>non-promise => 'p' resolves with it</li>
+						<li>promise => 'p' mirrors that promise</li>
+					</ul>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  await Promise.all(promises); //
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre style="margin:0; width:auto;     font-size: 33px !important ; line-height: 41px;'	'"><code>async function showData(urls) {
+  const promises = urls.map(url => {
+    return fetch(url);
+  });
+
+  return await Promise.all(promises); //
+}
+</code></pre>
+				</section>
+
+				<section>
+					<pre><code>return await Promise.all(promises);</code></pre>
+
+					<ol>
+						<li>Unwraps Promise.all()</li>
+						<li>Wraps again when return</li>
+					</ol>
 				</section>
 
 				<section>
@@ -455,6 +516,10 @@ document.getElementsByTagName("head")[0].appendChild(link);
 					<h2>
 						await suspends the current async function, including all control structures.
 					</h2>
+				</section>
+
+				<section>
+					<h2>Use promsies if you need concurrency</h2>
 				</section>
 
 				<section>
