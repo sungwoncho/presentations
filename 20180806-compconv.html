@@ -112,7 +112,11 @@ document.getElementsByTagName("head")[0].appendChild(link);
 				</section>
 
 				<section>
-					<h2>Save time by automatically switching between function and class components</h2>
+					<h2>Write better code by automatically switching between function and class components</h2>
+				</section>
+
+				<section>
+					<img src="assets/compconv-demo.gif" alt="" style="width: 1168px;" />
 				</section>
 
 				<section>
@@ -137,20 +141,6 @@ document.getElementsByTagName("head")[0].appendChild(link);
                     <h3>
                         Tedious to translate between function and class component
                     </h3>
-                </section>
-
-                <section>
-                    <pre><code>import React from 'react';
-
-class Home extends React.Component {
-    render() {
-        return (
-            <div>
-                Home
-            </div>
-        )
-    }
-}</code></pre>
                 </section>
 
                 <section>
@@ -275,7 +265,7 @@ function Home() {
     return;
   }
 
-  ReactDOM.render(<App />, document.getElementById("root"), () => {
+  ReactDOM.render(&lt;App />, document.getElementById("root"), () => {
     renderApp(i + 1);
   });
 }
@@ -330,7 +320,7 @@ renderApp(1);</code></pre>
 								</section>
 
 								<section>
-									<img src="assets/compconv-manual.gif" alt="" style="width: 768px;" />
+									<img src="assets/compconv-manual.gif" alt="" style="width: 868px;" />
 								</section>
 
 								<section>
@@ -341,7 +331,7 @@ renderApp(1);</code></pre>
 								</section>
 
 								<section>
-									<img src="assets/compconv-auto.gif" alt="" style="width: 768px;" />
+									<img src="assets/compconv-auto.gif" alt="" style="width: 868px;" />
 								</section>
 
 								<section>
@@ -377,6 +367,627 @@ renderApp(1);</code></pre>
 
 								<section>
 									<h2>How it works</h2>
+								</section>
+
+								<section>
+									<ol>
+										<li>Build an abstract syntax tree</li>
+										<li>Collect information by walking the tree</li>
+										<li>Output a new format</li>
+									</ol>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 800px;">export default function(code) {
+  // 1. build ast
+  const ast = babylon.parse(code, {
+    sourceType: "module",
+    plugins: ["jsx"]
+  });
+
+  // 2. walk the tree
+  const context = {
+    namedExport: null,
+    defaultExport: null,
+    identifier: null,
+    type: null,
+    propTree: {},
+    jsxBodyTree: null
+  };
+
+  walkTree(ast.program, context);
+
+  // 3. output a new format
+  return output(context);
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>1. Build an abstract syntax tree</h3>
+
+									<p>
+										A tree representation of a source code
+									</p>
+								</section>
+
+								<section>
+									<pre><code>function Home() {
+  const { foo, bar } = this.props;
+
+  return (
+    <div>
+      hello { foo } { bar }
+    </div>
+  )
+}</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 800px;">const babylon = require("babylon");
+
+const sample = `function Home() {
+  const { foo, bar } = this.props;
+
+  return (
+    <div>
+      hello { foo } { bar }
+    </div>
+  )
+}`;
+
+const ast = babylon.parse(sample, {
+  sourceType: "module",
+  plugins: ["jsx"]
+});
+
+console.log(JSON.stringify(ast, null, 2));</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 600px">{
+  "type": "File",
+  "start": 0,
+  "end": 119,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 1
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 119,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 9,
+        "column": 1
+      }
+    },
+    "sourceType": "module",
+    "body": [
+      {
+        "type": "FunctionDeclaration",
+        "start": 0,
+        "end": 119,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 1
+          }
+        },
+        "id": {
+          "type": "Identifier",
+          "start": 9,
+          "end": 13,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            },
+            "identifierName": "Home"
+          },
+          "name": "Home"
+        },
+        "generator": false,
+        "expression": false,
+        "async": false,
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "start": 16,
+          "end": 119,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 16
+            },
+            "end": {
+              "line": 9,
+              "column": 1
+            }
+          },
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "start": 20,
+              "end": 52,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 2
+                },
+                "end": {
+                  "line": 2,
+                  "column": 34
+                }
+              },
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "start": 26,
+                  "end": 51,
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 33
+                    }
+                  },
+                  "id": {
+                    "type": "ObjectPattern",
+                    "start": 26,
+                    "end": 38,
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 20
+                      }
+                    },
+                    "properties": [
+                      {
+                        "type": "ObjectProperty",
+                        "start": 28,
+                        "end": 31,
+                        "loc": {
+                          "start": {
+                            "line": 2,
+                            "column": 10
+                          },
+                          "end": {
+                            "line": 2,
+                            "column": 13
+                          }
+                        },
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "key": {
+                          "type": "Identifier",
+                          "start": 28,
+                          "end": 31,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 13
+                            },
+                            "identifierName": "foo"
+                          },
+                          "name": "foo"
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "start": 28,
+                          "end": 31,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 13
+                            },
+                            "identifierName": "foo"
+                          },
+                          "name": "foo"
+                        },
+                        "extra": {
+                          "shorthand": true
+                        }
+                      },
+                      {
+                        "type": "ObjectProperty",
+                        "start": 33,
+                        "end": 36,
+                        "loc": {
+                          "start": {
+                            "line": 2,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 2,
+                            "column": 18
+                          }
+                        },
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "key": {
+                          "type": "Identifier",
+                          "start": 33,
+                          "end": 36,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 18
+                            },
+                            "identifierName": "bar"
+                          },
+                          "name": "bar"
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "start": 33,
+                          "end": 36,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 18
+                            },
+                            "identifierName": "bar"
+                          },
+                          "name": "bar"
+                        },
+                        "extra": {
+                          "shorthand": true
+                        }
+                      }
+                    ]
+                  },
+                  "init": {
+                    "type": "MemberExpression",
+                    "start": 41,
+                    "end": 51,
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 23
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 33
+                      }
+                    },
+                    "object": {
+                      "type": "ThisExpression",
+                      "start": 41,
+                      "end": 45,
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 27
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 46,
+                      "end": 51,
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 28
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 33
+                        },
+                        "identifierName": "props"
+                      },
+                      "name": "props"
+                    },
+                    "computed": false
+                  }
+                }
+              ],
+              "kind": "const"
+            },
+            {
+              "type": "ReturnStatement",
+              "start": 56,
+              "end": 117,
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 2
+                },
+                "end": {
+                  "line": 8,
+                  "column": 3
+                }
+              },
+              "argument": {
+                "type": "JSXElement",
+                "start": 69,
+                "end": 113,
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 10
+                  }
+                },
+                "openingElement": {
+                  "type": "JSXOpeningElement",
+                  "start": 69,
+                  "end": 74,
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 9
+                    }
+                  },
+                  "attributes": [],
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "start": 70,
+                    "end": 73,
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 5
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 8
+                      }
+                    },
+                    "name": "div"
+                  },
+                  "selfClosing": false
+                },
+                "closingElement": {
+                  "type": "JSXClosingElement",
+                  "start": 107,
+                  "end": 113,
+                  "loc": {
+                    "start": {
+                      "line": 7,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 10
+                    }
+                  },
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "start": 109,
+                    "end": 112,
+                    "loc": {
+                      "start": {
+                        "line": 7,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 7,
+                        "column": 9
+                      }
+                    },
+                    "name": "div"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "JSXText",
+                    "start": 74,
+                    "end": 87,
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 12
+                      }
+                    },
+                    "extra": null,
+                    "value": "\n      hello "
+                  },
+                  {
+                    "type": "JSXExpressionContainer",
+                    "start": 87,
+                    "end": 94,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 19
+                      }
+                    },
+                    "expression": {
+                      "type": "Identifier",
+                      "start": 89,
+                      "end": 92,
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 14
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 17
+                        },
+                        "identifierName": "foo"
+                      },
+                      "name": "foo"
+                    }
+                  },
+                  {
+                    "type": "JSXText",
+                    "start": 94,
+                    "end": 95,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 19
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 20
+                      }
+                    },
+                    "extra": null,
+                    "value": " "
+                  },
+                  {
+                    "type": "JSXExpressionContainer",
+                    "start": 95,
+                    "end": 102,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 27
+                      }
+                    },
+                    "expression": {
+                      "type": "Identifier",
+                      "start": 97,
+                      "end": 100,
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 22
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 25
+                        },
+                        "identifierName": "bar"
+                      },
+                      "name": "bar"
+                    }
+                  },
+                  {
+                    "type": "JSXText",
+                    "start": 102,
+                    "end": 107,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 27
+                      },
+                      "end": {
+                        "line": 7,
+                        "column": 4
+                      }
+                    },
+                    "extra": null,
+                    "value": "\n    "
+                  }
+                ],
+                "extra": {
+                  "parenthesized": true,
+                  "parenStart": 63
+                }
+              }
+            }
+          ],
+          "directives": []
+        }
+      }
+    ]
+  }
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>2. Collect information by walking the tree</h3>
+								</section>
+
+								<section>
+									<pre><code>const context = {
+  namedExport: null,
+  defaultExport: null,
+  identifier: null,
+  type: null,
+  propTree: {},
+  jsxBodyTree: null
+};
+
+walkTree(ast.program, context);</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 600px;">// walkTree traverses an abstract syntax tree
+function walkTree(node, ctx) {
+  switch (node.type) {
+    case "Program": {/* ... */}
+    case "ExportDefaultDeclaration": {/* ... */}
+    case "ClassDeclaration": {/* ... */}
+    case "ClassBody": {/* ... */}
+    case "BlockStatement": {/* ... */}
+    case "VariableDeclaration": {/* ... */}
+    case "JSXExpressionContainer": {/* ... */}
+  }
+
+  return ctx;
+}</code></pre>
 								</section>
       </div>
 		</div>
