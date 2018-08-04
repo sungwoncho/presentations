@@ -1,0 +1,1109 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+		if (location.hostname.indexOf("github.io") > -1) {
+  (function(i, s, o, g, r, a, m) {
+    i["GoogleAnalyticsObject"] = r;
+    (i[r] =
+      i[r] ||
+      function() {
+        (i[r].q = i[r].q || []).push(arguments);
+      }),
+      (i[r].l = 1 * new Date());
+    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(
+    window,
+    document,
+    "script",
+    "https://www.google-analytics.com/analytics.js",
+    "ga"
+  );
+
+  ga("create", "UA-55773666-12", "auto");
+  ga("send", "pageview");
+}
+</script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Compconv</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+		var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = window.location.search.match(/print-pdf/gi)
+  ? "css/print/pdf.css"
+  : "css/print/paper.css";
+document.getElementsByTagName("head")[0].appendChild(link);
+</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 120px !important;
+		}
+		h2 {
+            font-size: 70px !important;
+		}
+		h3 {
+            font-size: 55px !important;
+		}
+		pre {
+	    font-size: 26px !important;
+		}
+		.fast {
+	    background: #d1ffd1;
+		}
+		.slow {
+			background: #ffd5d5;
+		}
+		ul, ol {
+			font-size: 60px !important;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+                    <h1>Compconv</h1>
+				</section>
+
+				<section>
+					<img src="assets/sung.jpg" alt="" style="border-radius: 100%; width: 400px;" />
+					<div>
+						<h2>Sung</h2>
+						<div>
+							<a style="font-size: 50px;" href="https://sung.io">sung.io</a>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Write better code by automatically switching between function and class components</h2>
+				</section>
+
+				<section>
+					<img src="assets/compconv-demo.gif" alt="" style="width: 1168px;" />
+				</section>
+
+				<section>
+					<ol>
+						<li>
+							Problem
+						</li>
+						<li>
+							Demo
+						</li>
+						<li>
+							How It Works
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h2>
+                        Problem
+					</h2>
+
+                    <h3>
+                        Tedious to translate between function and class component
+                    </h3>
+                </section>
+
+                <section>
+									<pre><code>import React from 'react';
+
+class Home extends React.Component {
+  render() {
+    return (
+      <div>
+        Home
+      </div>
+    )
+  }
+}</code></pre>
+	<pre><code>import React from 'react';
+
+function Home() {
+  return (
+    <div>
+      Home
+    </div>
+  )
+}</code></pre>
+                </section>
+
+								<section>
+									<h2>function => class</h2>
+
+									<ol>
+										<li>To use lifecycle methods</li>
+										<li>To keep states</li>
+									</ol>
+								</section>
+
+                <section>
+									<h2>class => function</h2>
+
+									<ol>
+										<li>To reduce footprint</li>
+										<li>For performance</li>
+									</ol>
+                </section>
+
+								<section>
+									<h3>Smaller footprint</h3>
+								</section>
+
+								<section>
+									<h3>babel output for class</h3>
+									<pre><code style="max-height: 600px !important; font-size: 14px;line-height: 1;">'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Home = function (_React$Component) {
+    _inherits(Home, _React$Component);
+
+    function Home() {
+        _classCallCheck(this, Home);
+
+        return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+    }
+
+    _createClass(Home, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                'Home'
+            );
+        }
+    }]);
+
+    return Home;
+}(_react2.default.Component);</code></pre>
+								</section>
+
+								<section>
+									<h3>babel output for function</h3>
+									<pre><code style="max-height: 600px !important; line-height: 1;">'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Home() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    'Home'
+  );
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>Performance</h3>
+								</section>
+
+								<section>
+									<h3>Functional components are faster to render</h3>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 600px;">function renderApp(i) {
+  if (i === 1000) {
+    const t2 = performance.now();
+    console.log("Took", t2 - t1, "milliseconds");
+    return;
+  }
+
+  ReactDOM.render(&lt;Home />, document.getElementById("root"), () => {
+    renderApp(i + 1);
+  });
+}
+
+const t1 = performance.now();
+renderApp(1);</code></pre>
+								</section>
+
+								<section>
+									<table style="font-size: 40px;">
+										<thead>
+											<th>type</th>
+											<th>mean</th>
+											<th>min</th>
+											<th>max</th>
+											<th>stddev</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td>function</td>
+												<td class="fast">546</td>
+												<td>473</td>
+												<td>712</td>
+												<td>78</td>
+											</tr>
+											<tr>
+												<td>class</td>
+												<td class="slow">577</td>
+												<td>510</td>
+												<td>674</td>
+												<td>57</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<p style="
+			color: #797979;
+			font-size: 29px;
+			text-align: right;
+			margin-top: 38px;
+			margin-right: 250px;">
+										React 16.4.2 on Firefox 61.0.1 on macOS 10.12.5
+									</p>
+								</section>
+
+								<section>
+									<h3>But It's too hard to convert components</h3>
+								</section>
+
+								<section>
+									<h2>Demo</h2>
+								</section>
+
+								<section>
+									<img src="assets/compconv-manual.gif" alt="" style="width: 868px;" />
+								</section>
+
+								<section>
+									<ul>
+										<li>102 keystrokes</li>
+										<li>28 seconds</li>
+									</ul>
+								</section>
+
+								<section>
+									<img src="assets/compconv-auto.gif" alt="" style="width: 868px;" />
+								</section>
+
+								<section>
+									<ul>
+										<li>0 keystrokes</li>
+										<li>3 seconds</li>
+									</ul>
+								</section>
+
+								<section>
+									<h3>Comparison</h3>
+
+									<table style="font-size: 40px;">
+										<thead>
+											<th>method</th>
+											<th>keystrokes</th>
+											<th>time (s)</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td>manual</td>
+												<td class="slow">102 (+&infin;%)</td>
+												<td class="slow">28 (+833%)</td>
+											</tr>
+											<tr>
+												<td>compconv</td>
+												<td class="fast">0</td>
+												<td class="fast">3</td>
+											</tr>
+										</tbody>
+									</table>
+								</section>
+
+								<section>
+									<h2>How it works</h2>
+								</section>
+
+								<section>
+									<ol>
+										<li>Build an abstract syntax tree</li>
+										<li>Collect information by walking the tree</li>
+										<li>Output a new format</li>
+									</ol>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 800px;">export default function(code) {
+  // 1. build ast
+  const ast = babylon.parse(code, {
+    sourceType: "module",
+    plugins: ["jsx"]
+  });
+
+  // 2. walk the tree
+  const context = {
+    namedExport: null,
+    defaultExport: null,
+    identifier: null,
+    type: null,
+    propTree: {},
+    jsxBodyTree: null
+  };
+
+  walkTree(ast.program, context);
+
+  // 3. output a new format
+  return output(context);
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>1. Build an abstract syntax tree</h3>
+
+									<p>
+										A tree representation of a source code
+									</p>
+								</section>
+
+								<section>
+									<pre><code>function Home() {
+  const { foo, bar } = this.props;
+
+  return (
+    <div>
+      hello { foo } { bar }
+    </div>
+  )
+}</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 800px;">const babylon = require("babylon");
+
+const sample = `function Home() {
+  const { foo, bar } = this.props;
+
+  return (
+    <div>
+      hello { foo } { bar }
+    </div>
+  )
+}`;
+
+const ast = babylon.parse(sample, {
+  sourceType: "module",
+  plugins: ["jsx"]
+});
+
+console.log(JSON.stringify(ast, null, 2));</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 600px">{
+  "type": "File",
+  "start": 0,
+  "end": 119,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 9,
+      "column": 1
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 119,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 9,
+        "column": 1
+      }
+    },
+    "sourceType": "module",
+    "body": [
+      {
+        "type": "FunctionDeclaration",
+        "start": 0,
+        "end": 119,
+        "loc": {
+          "start": {
+            "line": 1,
+            "column": 0
+          },
+          "end": {
+            "line": 9,
+            "column": 1
+          }
+        },
+        "id": {
+          "type": "Identifier",
+          "start": 9,
+          "end": 13,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 9
+            },
+            "end": {
+              "line": 1,
+              "column": 13
+            },
+            "identifierName": "Home"
+          },
+          "name": "Home"
+        },
+        "generator": false,
+        "expression": false,
+        "async": false,
+        "params": [],
+        "body": {
+          "type": "BlockStatement",
+          "start": 16,
+          "end": 119,
+          "loc": {
+            "start": {
+              "line": 1,
+              "column": 16
+            },
+            "end": {
+              "line": 9,
+              "column": 1
+            }
+          },
+          "body": [
+            {
+              "type": "VariableDeclaration",
+              "start": 20,
+              "end": 52,
+              "loc": {
+                "start": {
+                  "line": 2,
+                  "column": 2
+                },
+                "end": {
+                  "line": 2,
+                  "column": 34
+                }
+              },
+              "declarations": [
+                {
+                  "type": "VariableDeclarator",
+                  "start": 26,
+                  "end": 51,
+                  "loc": {
+                    "start": {
+                      "line": 2,
+                      "column": 8
+                    },
+                    "end": {
+                      "line": 2,
+                      "column": 33
+                    }
+                  },
+                  "id": {
+                    "type": "ObjectPattern",
+                    "start": 26,
+                    "end": 38,
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 8
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 20
+                      }
+                    },
+                    "properties": [
+                      {
+                        "type": "ObjectProperty",
+                        "start": 28,
+                        "end": 31,
+                        "loc": {
+                          "start": {
+                            "line": 2,
+                            "column": 10
+                          },
+                          "end": {
+                            "line": 2,
+                            "column": 13
+                          }
+                        },
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "key": {
+                          "type": "Identifier",
+                          "start": 28,
+                          "end": 31,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 13
+                            },
+                            "identifierName": "foo"
+                          },
+                          "name": "foo"
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "start": 28,
+                          "end": 31,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 10
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 13
+                            },
+                            "identifierName": "foo"
+                          },
+                          "name": "foo"
+                        },
+                        "extra": {
+                          "shorthand": true
+                        }
+                      },
+                      {
+                        "type": "ObjectProperty",
+                        "start": 33,
+                        "end": 36,
+                        "loc": {
+                          "start": {
+                            "line": 2,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 2,
+                            "column": 18
+                          }
+                        },
+                        "method": false,
+                        "shorthand": true,
+                        "computed": false,
+                        "key": {
+                          "type": "Identifier",
+                          "start": 33,
+                          "end": 36,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 18
+                            },
+                            "identifierName": "bar"
+                          },
+                          "name": "bar"
+                        },
+                        "value": {
+                          "type": "Identifier",
+                          "start": 33,
+                          "end": 36,
+                          "loc": {
+                            "start": {
+                              "line": 2,
+                              "column": 15
+                            },
+                            "end": {
+                              "line": 2,
+                              "column": 18
+                            },
+                            "identifierName": "bar"
+                          },
+                          "name": "bar"
+                        },
+                        "extra": {
+                          "shorthand": true
+                        }
+                      }
+                    ]
+                  },
+                  "init": {
+                    "type": "MemberExpression",
+                    "start": 41,
+                    "end": 51,
+                    "loc": {
+                      "start": {
+                        "line": 2,
+                        "column": 23
+                      },
+                      "end": {
+                        "line": 2,
+                        "column": 33
+                      }
+                    },
+                    "object": {
+                      "type": "ThisExpression",
+                      "start": 41,
+                      "end": 45,
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 23
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 27
+                        }
+                      }
+                    },
+                    "property": {
+                      "type": "Identifier",
+                      "start": 46,
+                      "end": 51,
+                      "loc": {
+                        "start": {
+                          "line": 2,
+                          "column": 28
+                        },
+                        "end": {
+                          "line": 2,
+                          "column": 33
+                        },
+                        "identifierName": "props"
+                      },
+                      "name": "props"
+                    },
+                    "computed": false
+                  }
+                }
+              ],
+              "kind": "const"
+            },
+            {
+              "type": "ReturnStatement",
+              "start": 56,
+              "end": 117,
+              "loc": {
+                "start": {
+                  "line": 4,
+                  "column": 2
+                },
+                "end": {
+                  "line": 8,
+                  "column": 3
+                }
+              },
+              "argument": {
+                "type": "JSXElement",
+                "start": 69,
+                "end": 113,
+                "loc": {
+                  "start": {
+                    "line": 5,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 7,
+                    "column": 10
+                  }
+                },
+                "openingElement": {
+                  "type": "JSXOpeningElement",
+                  "start": 69,
+                  "end": 74,
+                  "loc": {
+                    "start": {
+                      "line": 5,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 5,
+                      "column": 9
+                    }
+                  },
+                  "attributes": [],
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "start": 70,
+                    "end": 73,
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 5
+                      },
+                      "end": {
+                        "line": 5,
+                        "column": 8
+                      }
+                    },
+                    "name": "div"
+                  },
+                  "selfClosing": false
+                },
+                "closingElement": {
+                  "type": "JSXClosingElement",
+                  "start": 107,
+                  "end": 113,
+                  "loc": {
+                    "start": {
+                      "line": 7,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 7,
+                      "column": 10
+                    }
+                  },
+                  "name": {
+                    "type": "JSXIdentifier",
+                    "start": 109,
+                    "end": 112,
+                    "loc": {
+                      "start": {
+                        "line": 7,
+                        "column": 6
+                      },
+                      "end": {
+                        "line": 7,
+                        "column": 9
+                      }
+                    },
+                    "name": "div"
+                  }
+                },
+                "children": [
+                  {
+                    "type": "JSXText",
+                    "start": 74,
+                    "end": 87,
+                    "loc": {
+                      "start": {
+                        "line": 5,
+                        "column": 9
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 12
+                      }
+                    },
+                    "extra": null,
+                    "value": "\n      hello "
+                  },
+                  {
+                    "type": "JSXExpressionContainer",
+                    "start": 87,
+                    "end": 94,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 12
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 19
+                      }
+                    },
+                    "expression": {
+                      "type": "Identifier",
+                      "start": 89,
+                      "end": 92,
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 14
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 17
+                        },
+                        "identifierName": "foo"
+                      },
+                      "name": "foo"
+                    }
+                  },
+                  {
+                    "type": "JSXText",
+                    "start": 94,
+                    "end": 95,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 19
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 20
+                      }
+                    },
+                    "extra": null,
+                    "value": " "
+                  },
+                  {
+                    "type": "JSXExpressionContainer",
+                    "start": 95,
+                    "end": 102,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 20
+                      },
+                      "end": {
+                        "line": 6,
+                        "column": 27
+                      }
+                    },
+                    "expression": {
+                      "type": "Identifier",
+                      "start": 97,
+                      "end": 100,
+                      "loc": {
+                        "start": {
+                          "line": 6,
+                          "column": 22
+                        },
+                        "end": {
+                          "line": 6,
+                          "column": 25
+                        },
+                        "identifierName": "bar"
+                      },
+                      "name": "bar"
+                    }
+                  },
+                  {
+                    "type": "JSXText",
+                    "start": 102,
+                    "end": 107,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 27
+                      },
+                      "end": {
+                        "line": 7,
+                        "column": 4
+                      }
+                    },
+                    "extra": null,
+                    "value": "\n    "
+                  }
+                ],
+                "extra": {
+                  "parenthesized": true,
+                  "parenStart": 63
+                }
+              }
+            }
+          ],
+          "directives": []
+        }
+      }
+    ]
+  }
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>2. Collect information by walking the tree</h3>
+								</section>
+
+								<section>
+									<pre><code>const context = {
+  namedExport: null,
+  defaultExport: null,
+  identifier: null,
+  type: null,
+  propTree: {},
+  jsxBodyTree: null
+};
+
+walkTree(ast.program, context);</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 600px;">// walkTree traverses an abstract syntax tree
+function walkTree(node, ctx) {
+  switch (node.type) {
+    case "Program": {/* ... */}
+    case "ExportDefaultDeclaration": {/* ... */}
+    case "ClassDeclaration": {/* ... */}
+    case "ClassBody": {/* ... */}
+    case "BlockStatement": {/* ... */}
+    case "VariableDeclaration": {/* ... */}
+    case "JSXExpressionContainer": {/* ... */}
+  }
+
+  return ctx;
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>3. Output a new format</h3>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 650px;">function outputClass(ctx, code) {
+  let id;
+  if (ctx.identifier) {
+    id = ctx.identifier;
+  } else {
+    id = "MyComponent";
+  }
+
+  let ret = `class ${id} extends React.Component {
+  render() {
+    ${destructureProps(ctx.propTree)}
+
+    return (
+${indentCode(code, "      ")}
+    )
+  }
+}`;
+
+  return ret;
+}</code></pre>
+								</section>
+
+								<section>
+									<h2>Using this core library,<br/>we can make editor plugins!</h2>
+								</section>
+
+								<section>
+									<h3>Repositories</h3>
+
+									<ul>
+										<li>
+											<a href="https://github.com/sungwoncho/compconv">compconv</a>
+
+										</li>
+										<li>
+											<a href="https://github.com/sungwoncho/compconv-atom">compconv-atom</a>
+										</li>
+									</ul>
+								</section>
+
+								<section>
+									<h2>Still WIP. Let's build together.</h2>
+								</section>
+
+								<section>
+									<h2>Write better code by automatically switching between function and class components</h2>
+								</section>
+
+								<section>
+									<img src="assets/sung.jpg" alt="" style="border-radius: 100%; width: 400px;" />
+									<div>
+										<h2>Sung</h2>
+										<div>
+											<a style="font-size: 50px;" href="https://sung.io">sung.io</a>
+										</div>
+									</div>
+								</section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: "slide", // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    {
+      src: "lib/js/classList.js",
+      condition: function() {
+        return !document.body.classList;
+      }
+    },
+    {
+      src: "plugin/markdown/marked.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/markdown/markdown.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/highlight/highlight.js",
+      async: true,
+      condition: function() {
+        return !!document.querySelector("pre code");
+      },
+      callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    },
+    { src: "plugin/zoom-js/zoom.js", async: true },
+    { src: "plugin/notes/notes.js", async: true }
+  ]
+});
+</script>
+
+	</body>
+</html>
