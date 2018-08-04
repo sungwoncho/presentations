@@ -251,82 +251,53 @@ function Home() {
 								</section>
 
 								<section>
-									<h3>(Future) Performance</h3>
+									<h3>Performance</h3>
 								</section>
 
 								<section>
-									<h3>Using React 16, performance is the same for class and functional components</h3>
+									<h3>Functional components are faster to render</h3>
 								</section>
 
 								<section>
-									<pre><code style="max-height: 600px;">function App() {
-  return <div>App</div>;
-}
-
-function renderApp(i) {
+									<pre><code style="max-height: 600px;">function renderApp(i) {
   if (i === 1000) {
-    console.timeEnd("renderApp()");
+    const t2 = performance.now();
+    console.log("Took", t2 - t1, "milliseconds");
     return;
   }
 
-  ReactDOM.render(&lt;App />, document.getElementById("root"), () => {
+  ReactDOM.render(<App />, document.getElementById("root"), () => {
     renderApp(i + 1);
   });
 }
 
-console.time("renderApp()");
-renderApp(0);
-</code></pre>
-								</section>
-
-								<section>
-									<pre><code style="max-height: 800px;">class App extends React.Component {
-  render() {
-    return (
-      <div>
-        App
-      </div>
-    );
-  }
-}
-
-function renderApp(i) {
-  if (i === 1000) {
-    console.timeEnd("renderApp()");
-    return;
-  }
-
-  ReactDOM.render(&lt;App />, document.getElementById("root"), () => {
-    renderApp(i + 1);
-  });
-}
-
-console.time("renderApp()");
-renderApp(0);
-</code></pre>
+const t1 = performance.now();
+renderApp(1);</code></pre>
 								</section>
 
 								<section>
 									<table style="font-size: 40px;">
 										<thead>
 											<th>type</th>
+											<th>mean</th>
 											<th>min</th>
 											<th>max</th>
-											<th>mean</th>
 											<th>stddev</th>
 										</thead>
 										<tbody>
 											<tr>
 												<td>function</td>
-												<td>v3.28.71.19</td>
-												<td class="fast">704</td>
-												<td class="slow">5256</td>
+												<td class="fast">546</td>
+												<td>473</td>
+												<td>712</td>
+												<td>78</td>
 											</tr>
 											<tr>
 												<td>class</td>
-												<td>v4.5.103.46</td>
-												<td class="fast">944</td>
-												<td class="slow">5496</td>
+												<td class="slow">577</td>
+												<td>510</td>
+												<td>674</td>
+												<td>57</td>
 											</tr>
 										</tbody>
 									</table>
@@ -336,8 +307,8 @@ renderApp(0);
 			font-size: 29px;
 			text-align: right;
 			margin-top: 38px;
-			margin-right: 50px;">
-										Tested on Firefox 61.0.1 on macOS 10.12.5
+			margin-right: 250px;">
+										React 16.4.2 on Firefox 61.0.1 on macOS 10.12.5
 									</p>
 								</section>
       </div>
