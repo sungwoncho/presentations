@@ -989,6 +989,69 @@ function walkTree(node, ctx) {
   return ctx;
 }</code></pre>
 								</section>
+
+								<section>
+									<h3>3. Output a new format</h3>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 650px;">function outputClass(ctx, code) {
+  let id;
+  if (ctx.identifier) {
+    id = ctx.identifier;
+  } else {
+    id = "MyComponent";
+  }
+
+  let ret = `class ${id} extends React.Component {
+  render() {
+    ${destructureProps(ctx.propTree)}
+
+    return (
+${indentCode(code, "      ")}
+    )
+  }
+}`;
+
+  return ret;
+}</code></pre>
+								</section>
+
+								<section>
+									<h2>Using this core library,<br/>we can make editor plugins!</h2>
+								</section>
+
+								<section>
+									<h3>Repositories</h3>
+
+									<ul>
+										<li>
+											<a href="https://github.com/sungwoncho/compconv">compconv</a>
+
+										</li>
+										<li>
+											<a href="https://github.com/sungwoncho/compconv-atom">compconv-atom</a>
+										</li>
+									</ul>
+								</section>
+
+								<section>
+									<h2>Still WIP. Let's build together.</h2>
+								</section>
+
+								<section>
+									<h2>Write better code by automatically switching between function and class components</h2>
+								</section>
+
+								<section>
+									<img src="assets/sung.jpg" alt="" style="border-radius: 100%; width: 400px;" />
+									<div>
+										<h2>Sung</h2>
+										<div>
+											<a style="font-size: 50px;" href="https://sung.io">sung.io</a>
+										</div>
+									</div>
+								</section>
       </div>
 		</div>
 
