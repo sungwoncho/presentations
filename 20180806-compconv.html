@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+		if (location.hostname.indexOf("github.io") > -1) {
+  (function(i, s, o, g, r, a, m) {
+    i["GoogleAnalyticsObject"] = r;
+    (i[r] =
+      i[r] ||
+      function() {
+        (i[r].q = i[r].q || []).push(arguments);
+      }),
+      (i[r].l = 1 * new Date());
+    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(
+    window,
+    document,
+    "script",
+    "https://www.google-analytics.com/analytics.js",
+    "ga"
+  );
+
+  ga("create", "UA-55773666-12", "auto");
+  ga("send", "pageview");
+}
+</script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Compconv</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+		var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = window.location.search.match(/print-pdf/gi)
+  ? "css/print/pdf.css"
+  : "css/print/paper.css";
+document.getElementsByTagName("head")[0].appendChild(link);
+</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 120px !important;
+		}
+		h2 {
+            font-size: 70px !important;
+		}
+		h3 {
+            font-size: 55px !important;
+		}
+		pre {
+	    font-size: 26px !important;
+		}
+		.fast {
+	    background: #d1ffd1;
+		}
+		.slow {
+			background: #ffd5d5;
+		}
+		ul, ol {
+			font-size: 60px !important;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+                    <h1>Compconv</h1>
+				</section>
+
+				<section>
+					<img src="assets/sung.jpg" alt="" style="border-radius: 100%; width: 400px;" />
+					<div>
+						<h2>Sung</h2>
+						<div>
+							<a style="font-size: 50px;" href="https://sung.io">sung.io</a>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2>Save time by automatically switching between function and class components</h2>
+				</section>
+
+				<section>
+					<ol>
+						<li>
+							Problem
+						</li>
+						<li>
+							Demo
+						</li>
+						<li>
+							How It Works
+						</li>
+					</ol>
+				</section>
+
+				<section>
+					<h2>
+                        Problem
+					</h2>
+
+                    <h3>
+                        Tedious to translate between function and class component
+                    </h3>
+                </section>
+
+                <section>
+                    <pre><code>import React from 'react';
+
+class Home extends React.Component {
+    render() {
+        return (
+            <div>
+                Home
+            </div>
+        )
+    }
+}</code></pre>
+                </section>
+
+                <section>
+									<pre><code>import React from 'react';
+
+class Home extends React.Component {
+  render() {
+    return (
+      <div>
+        Home
+      </div>
+    )
+  }
+}</code></pre>
+	<pre><code>import React from 'react';
+
+function Home() {
+  return (
+    <div>
+      Home
+    </div>
+  )
+}</code></pre>
+                </section>
+
+                <section>
+									<h2>Why?</h2>
+
+									<ol>
+										<li>Smaller footprint</li>
+										<li>(Future) performance</li>
+									</ol>
+                </section>
+
+								<section>
+									<h3>Smaller footprint</h3>
+								</section>
+
+								<section>
+									<h3>babel output for class</h3>
+									<pre><code style="max-height: 600px !important; font-size: 14px;line-height: 1;">'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Home = function (_React$Component) {
+    _inherits(Home, _React$Component);
+
+    function Home() {
+        _classCallCheck(this, Home);
+
+        return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).apply(this, arguments));
+    }
+
+    _createClass(Home, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                'div',
+                null,
+                'Home'
+            );
+        }
+    }]);
+
+    return Home;
+}(_react2.default.Component);</code></pre>
+								</section>
+
+								<section>
+									<h3>babel output for function</h3>
+									<pre><code style="max-height: 600px !important; line-height: 1;">'use strict';
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Home() {
+  return _react2.default.createElement(
+    'div',
+    null,
+    'Home'
+  );
+}</code></pre>
+								</section>
+
+								<section>
+									<h3>(Future) Performance</h3>
+								</section>
+
+								<section>
+									<h3>Using React 16, performance is the same for class and functional components</h3>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 600px;">function App() {
+  return <div>App</div>;
+}
+
+function renderApp(i) {
+  if (i === 1000) {
+    console.timeEnd("renderApp()");
+    return;
+  }
+
+  ReactDOM.render(&lt;App />, document.getElementById("root"), () => {
+    renderApp(i + 1);
+  });
+}
+
+console.time("renderApp()");
+renderApp(0);
+</code></pre>
+								</section>
+
+								<section>
+									<pre><code style="max-height: 800px;">class App extends React.Component {
+  render() {
+    return (
+      <div>
+        App
+      </div>
+    );
+  }
+}
+
+function renderApp(i) {
+  if (i === 1000) {
+    console.timeEnd("renderApp()");
+    return;
+  }
+
+  ReactDOM.render(&lt;App />, document.getElementById("root"), () => {
+    renderApp(i + 1);
+  });
+}
+
+console.time("renderApp()");
+renderApp(0);
+</code></pre>
+								</section>
+
+								<section>
+									<table style="font-size: 40px;">
+										<thead>
+											<th>type</th>
+											<th>min</th>
+											<th>max</th>
+											<th>mean</th>
+											<th>stddev</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td>function</td>
+												<td>v3.28.71.19</td>
+												<td class="fast">704</td>
+												<td class="slow">5256</td>
+											</tr>
+											<tr>
+												<td>class</td>
+												<td>v4.5.103.46</td>
+												<td class="fast">944</td>
+												<td class="slow">5496</td>
+											</tr>
+										</tbody>
+									</table>
+
+									<p style="
+			color: #797979;
+			font-size: 29px;
+			text-align: right;
+			margin-top: 38px;
+			margin-right: 50px;">
+										Tested on Firefox 61.0.1 on macOS 10.12.5
+									</p>
+								</section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: "slide", // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    {
+      src: "lib/js/classList.js",
+      condition: function() {
+        return !document.body.classList;
+      }
+    },
+    {
+      src: "plugin/markdown/marked.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/markdown/markdown.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/highlight/highlight.js",
+      async: true,
+      condition: function() {
+        return !!document.querySelector("pre code");
+      },
+      callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    },
+    { src: "plugin/zoom-js/zoom.js", async: true },
+    { src: "plugin/notes/notes.js", async: true }
+  ]
+});
+</script>
+
+	</body>
+</html>
