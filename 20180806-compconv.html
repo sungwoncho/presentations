@@ -176,12 +176,21 @@ function Home() {
 }</code></pre>
                 </section>
 
-                <section>
-									<h2>Why?</h2>
+								<section>
+									<h2>function => class</h2>
 
 									<ol>
-										<li>Smaller footprint</li>
-										<li>(Future) performance</li>
+										<li>To use lifecycle methods</li>
+										<li>To keep states</li>
+									</ol>
+								</section>
+
+                <section>
+									<h2>class => function</h2>
+
+									<ol>
+										<li>To reduce footprint</li>
+										<li>For performance</li>
 									</ol>
                 </section>
 
@@ -310,6 +319,64 @@ renderApp(1);</code></pre>
 			margin-right: 250px;">
 										React 16.4.2 on Firefox 61.0.1 on macOS 10.12.5
 									</p>
+								</section>
+
+								<section>
+									<h3>But It's too hard to convert components</h3>
+								</section>
+
+								<section>
+									<h2>Demo</h2>
+								</section>
+
+								<section>
+									<img src="assets/compconv-manual.gif" alt="" style="width: 768px;" />
+								</section>
+
+								<section>
+									<ul>
+										<li>102 keystrokes</li>
+										<li>28 seconds</li>
+									</ul>
+								</section>
+
+								<section>
+									<img src="assets/compconv-auto.gif" alt="" style="width: 768px;" />
+								</section>
+
+								<section>
+									<ul>
+										<li>0 keystrokes</li>
+										<li>3 seconds</li>
+									</ul>
+								</section>
+
+								<section>
+									<h3>Comparison</h3>
+
+									<table style="font-size: 40px;">
+										<thead>
+											<th>method</th>
+											<th>keystrokes</th>
+											<th>time (s)</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td>manual</td>
+												<td class="slow">102 (+&infin;%)</td>
+												<td class="slow">28 (+833%)</td>
+											</tr>
+											<tr>
+												<td>compconv</td>
+												<td class="fast">0</td>
+												<td class="fast">3</td>
+											</tr>
+										</tbody>
+									</table>
+								</section>
+
+								<section>
+									<h2>How it works</h2>
 								</section>
       </div>
 		</div>
