@@ -293,7 +293,7 @@ renderApp(1);</code></pre>
 											</tr>
 											<tr>
 												<td>class</td>
-												<td class="slow">577</td>
+												<td class="slow">577 (-5%)</td>
 												<td>510</td>
 												<td>674</td>
 												<td>57</td>
@@ -313,6 +313,10 @@ renderApp(1);</code></pre>
 
 								<section>
 									<h3>But It's too hard to convert components</h3>
+								</section>
+
+								<section>
+									<h3>So we make excuses and write inefficient code</h3>
 								</section>
 
 								<section>
@@ -441,6 +445,18 @@ const ast = babylon.parse(sample, {
 });
 
 console.log(JSON.stringify(ast, null, 2));</code></pre>
+								</section>
+
+								<section>
+									<pre><code>function Home() {
+  const { foo, bar } = this.props;
+
+  return (
+    <div>
+      hello { foo } { bar }
+    </div>
+  )
+}</code></pre>
 								</section>
 
 								<section>
@@ -975,6 +991,7 @@ walkTree(ast.program, context);</code></pre>
 
 								<section>
 									<pre><code style="max-height: 600px;">// walkTree traverses an abstract syntax tree
+// and modifies the given context
 function walkTree(node, ctx) {
   switch (node.type) {
     case "Program": {/* ... */}
