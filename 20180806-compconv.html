@@ -188,6 +188,30 @@ function Home() {
 									<h3>Smaller footprint</h3>
 								</section>
 
+	      <section>
+									<pre><code>import React from 'react';
+
+class Home extends React.Component {
+  render() {
+    return (
+      <div>
+        Home
+      </div>
+    )
+  }
+}</code></pre>
+	<pre><code>import React from 'react';
+
+function Home() {
+  return (
+    <div>
+      Home
+    </div>
+  )
+}</code></pre>
+                </section>
+
+	      
 								<section>
 									<h3>babel output for class</h3>
 									<pre><code style="max-height: 600px !important; font-size: 14px;line-height: 1;">'use strict';
