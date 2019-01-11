@@ -72,6 +72,10 @@ document.getElementsByTagName("head")[0].appendChild(link);
 	<body>
 
 	<style media="screen">
+    .strong {
+      font-weight: 600 !important;
+    }
+
 		h1 {
 			font-size: 120px !important;
 		}
@@ -120,8 +124,8 @@ document.getElementsByTagName("head")[0].appendChild(link);
 
           <ul>
             <li>Intellectual property</li>
-            <li>Open source</li>
-            <li>Software licenses</li>
+            <li>Open Source</li>
+            <li>Software License</li>
             <ul>
               <li>Academic licenses</li>
               <li>Permissive licenses</li>
@@ -137,6 +141,12 @@ document.getElementsByTagName("head")[0].appendChild(link);
         <section>
           <p>
             An attempt to remedy a failure in the market for knowledge
+          </p>
+        </section>
+
+        <section>
+          <p>
+            What is a market failure?
           </p>
         </section>
 
@@ -228,7 +238,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
         </section>
 
         <section>
-          <p>Make public goods private</p>
+          <p>Intellectual property makes public goods private</p>
         </section>
 
         <section>
@@ -247,6 +257,12 @@ document.getElementsByTagName("head")[0].appendChild(link);
           <h3>Shared ownership</h3>
 
           <p>Each contributor owns the code she contributes</p>
+        </section>
+
+        <section>
+          <h3>Involvement</h3>
+
+          <p>Each contributor has a say in the direction of the project</p>
         </section>
 
         <section>
@@ -274,16 +290,178 @@ document.getElementsByTagName("head")[0].appendChild(link);
           </table>
         </section>
 
-
         <section>
-          <h3>Programmer's dillema</h3>
-
-          <p>Free rider problem</p>
+          <h3>The role of open source licenses</h3>
         </section>
 
-        role of open source license
         <section>
-          
+          <h3>
+            Game theoretic perspective
+          </h3>
+
+          <ul>
+            <li>Non-zero-sum game</li>
+            <li>But subject to prisoner's dillemma</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Prisoner's dillemma</h3>
+
+          <table>
+            <tr>
+              <td></td>
+              <td class="strong">Prisoner B cooperates</td>
+              <td class="strong">Prisoner B defects</td>
+            </tr>
+            <tr>
+              <td class="strong">Prisoner A cooperates</td>
+              <td>Prisoner A and Prisoner B: small punishment (-1)</td>
+              <td>
+                Prisoner A: Large punishment (-10)<br/>
+                Prisoner B: No punishment (+1)
+              </td>
+            </tr>
+            <tr>
+              <td class="strong">Prisoner A defects</td>
+              <td>
+                Prisoner A: No punishment (+1)<br/>
+                Prisoner B: Large punishment (-10)
+              </td>
+              <td>Prisoner A and Prisoner B: medium punishment (-6)</td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Programmer'ss dillemma</h3>
+
+          <table>
+            <tr>
+              <td></td>
+              <td class="strong">Programmer B cooperates</td>
+              <td class="strong">Programmer B defects</td>
+            </tr>
+            <tr>
+              <td class="strong">Programmer A cooperates</td>
+              <td>
+                Contribution cost (-5)<br/>
+                Working program (+10)<br/>
+                (+5) Overall<br/>
+              </td>
+              <td>
+                Contribution cost (-5)<br/>
+                (-5) Overall<br/>
+              </td>
+            </tr>
+            <tr>
+              <td class="strong">Programmer A defects</td>
+              <td>
+                Appropriated code (+5)<br/>
+                (+5) Overall<br/>
+              </td>
+              <td>
+                Full cost (-10)<br/>
+                Working program (+10)<br/>
+                (0) Overall<br/>
+              </td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h3>Suboptimization</h3>
+
+          <p>Solving a each part of the problem optimally does not lead to best global solution</p>
+        </section>
+
+        <section>
+          <h3>role of licenses</h3>
+        </section>
+
+        <section>
+          <h3>1. Signial cooperative intent</h3>
+        </section>
+
+        <section>
+          <h3>2. Dictate decision matrix for other programmers</h3>
+        </section>
+
+        <section>
+          <table>
+            <tr>
+              <td></td>
+              <td class="strong">Programmer B cooperates</td>
+              <td class="strong">Programmer B defects</td>
+            </tr>
+            <tr>
+              <td class="strong">Programmer A cooperates</td>
+              <td>
+                Contribution cost (-5)<br/>
+                Working program (+10)<br/>
+                (+5) Overall<br/>
+              </td>
+              <td>
+                Contribution cost (-5)<br/>
+                Reimbursement for copyright violation (+7)<br/>
+                (+2) Overall<br/>
+              </td>
+            </tr>
+            <tr>
+              <td class="strong">Programmer A defects</td>
+              <td>
+                Appropriated code (+5)<br/>
+                Pay for copyright violation (-7)<br/>
+                (-2) Overall<br/>
+              </td>
+              <td>
+                Full cost (-10)<br/>
+                Working program (+10)<br/>
+                (0) Overall<br/>
+              </td>
+            </tr>
+          </table>
+        </section>
+
+        <section>
+          <h2>Software licenses</h2>
+        </section>
+
+        <section>
+          <ul>
+            <li>Academic</li>
+            <li>Permissive</li>
+            <li>Reciprocal</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Academic</h3>
+
+          <p>developed for code written in universities</p>
+
+          <p>MIT, BSD</p>
+        </section>
+
+        <section>
+          <p>Makes very few demands on users</p>
+          <p>Does not punish defectors</p>
+        </section>
+
+        <section>
+          <h3>Permissive</h3>
+
+          <p>Some restrictions (patent, trademark)</p>
+
+          <p>Apache 2.0</p>
+        </section>
+
+        <section>
+          <h3>Reciprocal</h3>
+
+          <p>Punishes defectors</p>
+
+          <p>GPL 2, LGPL, AGPL, MPL<p>
         </section>
 
       </div>
