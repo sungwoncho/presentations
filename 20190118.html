@@ -34,7 +34,7 @@
 
 		<meta charset="utf-8">
 
-		<title>Software licenses</title>
+		<title>Open source licenses</title>
 
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -102,7 +102,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
 		<div class="reveal">
       <div class="slides">
 				<section>
-          <h1>Software Licenses</h1>
+          <h1>Open Source Licenses</h1>
 				</section>
 
 				<section>
@@ -125,7 +125,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
           <ul>
             <li>Intellectual property</li>
             <li>Open Source</li>
-            <li>Software License</li>
+            <li>Examples</li>
             <ul>
               <li>Academic licenses</li>
               <li>Permissive licenses</li>
@@ -196,20 +196,6 @@ document.getElementsByTagName("head")[0].appendChild(link);
           </h3>
 
           <p>Overproduction or <u>underproduction</u></p>
-        </section>
-
-
-        <section>
-          <h3>Distribution of goods</h3>
-
-          <ol>
-            <li>Cost - what we give up</li>
-            <li>Preferences - what we want</li>
-          </ol>
-        </section>
-
-        <section>
-          <p>Suboptimal aggregate distribution of goods</p>
         </section>
 
         <section>
@@ -291,18 +277,89 @@ document.getElementsByTagName("head")[0].appendChild(link);
         </section>
 
         <section>
-          <h3>The role of open source licenses</h3>
+          <h3>Why need license?</h3>
         </section>
 
         <section>
-          <h3>
-            Game theoretic perspective
-          </h3>
+          <p>If you don't license it, other people cannot use your code.</p>
+        </section>
 
+        <section>
+          <p>Copyright restrictions apply as soon as someone creates a <i>tangible</i> work.</p>
+        </section>
+
+        <section>
+          <h2>Examples</h2>
+        </section>
+
+        <section>
           <ul>
-            <li>Non-zero-sum game</li>
-            <li>But subject to prisoner's dillemma</li>
+            <li>Academic</li>
+            <li>Permissive</li>
+            <li>Reciprocal</li>
           </ul>
+        </section>
+
+        <section>
+          <h3>Academic</h3>
+
+          <p>developed for code written in universities</p>
+
+          <i>MIT, BSD</i>
+        </section>
+
+        <section>
+          <p>Makes very few demands on users</p>
+          <p>Does not punish defectors</p>
+        </section>
+
+        <section>
+          <h3>MIT</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Preserve copyright notice</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>BSD 3-Clause</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Preserve copyright notice</li>
+            <li>Contributors cannot be used to endorse a project</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Permissive</h3>
+
+          <p>Some restrictions (patent, trademark)</p>
+
+          <i>Apache 2.0</i>
+        </section>
+
+        <section>
+          <h3>Apache 2.0</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Preserve copyright notice</li>
+            <li>State the change in code</li>
+            <li>Trademark protection</li>
+            <li>Grant use of patented contribution</li>
+            <li>Assign IP to project owner</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Reciprocal</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Allow others to change/redistribute code</li>
+            <li>Binary distribution must include source code</li>
+            <li>Copyleft (need to preserve the right to modify/redistribute)</li>
+          </ul>
+
+          <p>LGPL, GPLv2, GPLv3, AGPL, MPL<p>
         </section>
 
         <section>
@@ -334,7 +391,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
         </section>
 
         <section>
-          <h3>Programmer'ss dillemma</h3>
+          <h3>Programmer's dillemma</h3>
 
           <table>
             <tr>
@@ -376,15 +433,7 @@ document.getElementsByTagName("head")[0].appendChild(link);
         </section>
 
         <section>
-          <h3>role of licenses</h3>
-        </section>
-
-        <section>
-          <h3>1. Signial cooperative intent</h3>
-        </section>
-
-        <section>
-          <h3>2. Dictate decision matrix for other programmers</h3>
+          <h3>Punish defectors</h3>
         </section>
 
         <section>
@@ -424,46 +473,57 @@ document.getElementsByTagName("head")[0].appendChild(link);
         </section>
 
         <section>
-          <h2>Software licenses</h2>
+          <h3>LGPL (Lesser GPL)</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Can integrate LGPL software without being subject to copyleft</li>
+          </ul>
+
+          <div>
+            <br/>
+            WINE
+          </div>
         </section>
 
         <section>
-          <ul>
-            <li>Academic</li>
-            <li>Permissive</li>
-            <li>Reciprocal</li>
+          <h3>GPLv2</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Work containing GPL software is subject to copyleft if distributed</li>
+          </ul>
+
+          <div>
+            <br/>
+            Linux kernel, GCC
+          </div>
+        </section>
+
+        <section>
+          <h3>GPLv3</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Similar to GPL</li>
+            <li>Avoids Tivoization (Restrict DRM)</li>
           </ul>
         </section>
 
         <section>
-          <h3>Academic</h3>
+          <h3>AGPL</h3>
 
-          <p>developed for code written in universities</p>
-
-          <p>MIT, BSD</p>
+          <ul style="font-size: 40px !important;">
+            <li>Similar to GPL</li>
+            <li>Network access counts as distribution</li>
+          </ul>
         </section>
 
         <section>
-          <p>Makes very few demands on users</p>
-          <p>Does not punish defectors</p>
+          <h3>MPL (Mozilla Public License)</h3>
+
+          <ul style="font-size: 40px !important;">
+            <li>Copyleft but only applies to files not program</li>
+            <li>Weaker than GPL</li>
+          </ul>
         </section>
-
-        <section>
-          <h3>Permissive</h3>
-
-          <p>Some restrictions (patent, trademark)</p>
-
-          <p>Apache 2.0</p>
-        </section>
-
-        <section>
-          <h3>Reciprocal</h3>
-
-          <p>Punishes defectors</p>
-
-          <p>GPL 2, LGPL, AGPL, MPL<p>
-        </section>
-
       </div>
 		</div>
 
