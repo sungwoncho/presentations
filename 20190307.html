@@ -162,7 +162,51 @@ console.log("result:", hash);</code></pre>
         </section>
 
         <section>
+          <h3>Problem</h3>
+          <p>
+            Harder to write code that targets both browsers and non-browsers
+          </p>
+        </section>
 
+        <section>
+          <h3>Possible solution #1</h3>
+          <p>Write shims or wrappers</p>
+        </section>
+
+        <section>
+          <h3>Abstraction is where bugs live</h3>
+          <ul>
+            <li>
+              It is hard to audit and maintain shim and polyfills
+            </li>
+            <li>
+              Should never be users' responsibility.
+            </li>
+          </ul>
+          <p></p>
+        </section>
+
+        <section>
+          <h3>Possible solution #2</h3>
+          <p>Use polyfill or npm modules</p>
+        </section>
+
+        <section>
+          <h3>#1 rule of cryptography</h3>
+          <p>
+            <u><b>NEVER</b></u> <u><b>EVER</b></u> implement your own cryptography.
+          </p>
+        </section>
+
+        <section>
+          <h3>Flaws</h3>
+
+          <ul>
+            <li>Users should <b>NEVER</b> implement crypto</li>
+            <li>packages can be compromised</li>
+            <li>Native modules face compilation issues</li>
+            <li>Pure-JS implementation would be slow</li>
+          </ul>
         </section>
       </div>
 		</div>
