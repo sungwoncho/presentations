@@ -494,6 +494,112 @@ console.log(buffer.byteLength);
   );
 }</code></pre>
         </section>
+
+        <section>
+          <pre><code style="overflow: scroll;height: 700px;">async function hkdf(secret, salt, info, algorithm, dkLen) {
+  let secretBuf;
+  if (typeof secret === 'string') {
+    secretBuf = strToBuffer(secret);
+  } else {
+    secretBuf = secret;
+  }
+
+  const saltBuf = strToBuffer(salt);
+  const infoBuf = strToBuffer(info);
+
+  const key = await window.crypto.subtle.importKey(
+    'raw',
+    secretBuf,
+    {
+      name: 'HKDF'
+    },
+    false,
+    ['deriveBits']
+  );
+
+  return window.crypto.subtle.deriveBits(
+    {
+      name: HKDF,
+      hash: algorithm,
+      salt: saltBuf,
+      info: infoBuf
+    },
+    key,
+    dkLen
+  );
+}
+</code></pre>
+        </section>
+
+        <section>
+<pre><code style="">async function makeKeys(email, password, iteration) {
+  const masterKey = await pbkdf2(password, email, iteration);
+  const encKeyBits = await hkdf(
+    masterKey, email, 'enc', SHA256, 256
+  );
+  const authKeyBits = await hkdf(
+    masterKey, email, 'auth', SHA256, 256
+  );
+
+  return {
+    encKey: bufToB64(encKeyBits),
+    authKey: bufToB64(authKeyBits)
+  };
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>...And much more</h3>
+
+          <p>symmetric encryption using AES256 in GCM mode</p>
+        </section>
+
+        <section>
+          <h3>Check it out on Dnote</h3>
+
+          <a href="https://dnote.io">https://dnote.io</a>
+        </section>
+
+        <section>
+          <h3>Wrap up - Web Crypto API</h3>
+
+          <ol>
+            <li>
+              Why does it matter for node.js?
+            </li>
+            <li>
+              Web Crypto API Examples
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Conclusion</h3>
+
+          <ul>
+            <li>
+              Node.js has crypto module
+            </li>
+            <li>
+              Browsers have Web Crypto API
+            </li>
+            <li>
+              Should node.js implement Web Crypto API? Depends.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Thanks</h2>
+
+          <div>
+            Sung<br />
+            Monomax Software<br />
+            <a href="mailto:sung@monomax.sh">sung@monomax.sh</a><br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
+          </div>
+
+        </section>
       </div>
 		</div>
 
