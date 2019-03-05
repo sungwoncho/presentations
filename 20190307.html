@@ -205,7 +205,59 @@ console.log("result:", hash);</code></pre>
             <li>Users should <b>NEVER</b> implement crypto</li>
             <li>packages can be compromised</li>
             <li>Native modules face compilation issues</li>
-            <li>Pure-JS implementation would be slow</li>
+            <li>Pure-JavaScript implementation would be slow</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Should node.js implement Web Crypto API?</h3>
+        </section>
+
+        <section>
+          <h3>Trade-off</h3>
+        </section>
+
+        <section>
+          <h3>Favor</h3>
+
+          <ul>
+            <li>Write once to target browsers and non-browsers</li>
+            <li>
+              Rely on the standard library
+              <ul>
+                <li>No package to be compromised</li>
+                <li>No cross platform issues</li>
+                <li>Easier security audit</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Favor - counter-arguments</h3>
+
+          <ul>
+            <li>How often do we have to write universal crypto code?</li>
+            <li>Core does not mean bug-free</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Against</h3>
+
+          <ul>
+            <li>Can't just add stuff to core for convenience</li>
+            <li>Duplicate functionalities</li>
+            <li>Deprecation of crypto</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Against - counter-arguments</h3>
+
+          <ul>
+            <li>It's more than convenience</li>
+            <li>Software evolve all the time</li>
           </ul>
         </section>
       </div>
