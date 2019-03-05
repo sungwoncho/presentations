@@ -60,18 +60,19 @@ section, .left {
 
 		<div class="reveal">
       <div class="slides">
-				<section class="left">
+				<section>
           <h1>Web Crypto API</h1>
 
           <div>
             Sung<br />
-            Monomax Software
+            Monomax Software<br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
           </div>
 				</section>
 
-        <section class="left">
+        <section>
           <h2>1. Why does it matter for node.js?</h2>
-          <h2>2. Examples</h2>
+          <h2>2. Web Crypto API Examples</h2>
 				</section>
 
         <section>
@@ -89,6 +90,10 @@ section, .left {
         </section>
 
         <section>
+          <h3>All major browsers implement it</h3>
+        </section>
+
+        <section>
           <h3>Browser crypto implementations</h3>
 
           <ul>
@@ -98,7 +103,7 @@ section, .left {
         </section>
 
         <section>
-          <h3>A standard interface to interact with the underlying implementations.</h3>
+          <h3>An interface for the underlying implementations</h3>
         </section>
 
         <section>
@@ -143,7 +148,7 @@ section, .left {
           <h3>crypto module</h3>
           <ul>
             <li>
-              first documented in 0.1.94 release (August 2011)
+              first documented in v0.1.94 release (August 2011)
             </li>
             <li>
               relied on the host machine's OpenSSL library.
@@ -199,10 +204,10 @@ console.log("result:", hash);</code></pre>
         </section>
 
         <section>
-          <h3>Flaws</h3>
+          <h3>Why not polyfill or package?</h3>
 
           <ul>
-            <li>Users should <b>NEVER</b> implement crypto</li>
+            <li>Users should <b>NEVER</b> <b>EVER</b> implement crypto</li>
             <li>packages can be compromised</li>
             <li>Native modules face compilation issues</li>
             <li>Pure-JavaScript implementation would be slow</li>
@@ -226,7 +231,7 @@ console.log("result:", hash);</code></pre>
               Rely on the standard library
               <ul>
                 <li>No package to be compromised</li>
-                <li>No cross platform issues</li>
+                <li>No native module cross platform issues</li>
                 <li>Easier security audit</li>
               </ul>
             </li>
@@ -258,6 +263,116 @@ console.log("result:", hash);</code></pre>
           <ul>
             <li>It's more than convenience</li>
             <li>Software evolve all the time</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>2. Web Crypto API Examples</h2>
+        </section>
+
+        <section>
+          <h3 style="margin-bottom: 0;">Dnote</h3>
+          <p style="margin-top: 0;">An open source, encrypted notebook that respects your privacy</p>
+          <a href="https://dnote.io">https://dnote.io</a>
+        </section>
+
+        <section>
+          <h3>Design goal</h3>
+
+          <ul>
+            <li>Clients can write encrypted notes on the server</li>
+            <li>Server cannot decrypt the notes</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>My solution (registration)</h3>
+
+          <ul>
+            <li>User enters email and password</li>
+            <li>Derive k <- pbkdf2(password: password, salt: email, alg: 'sha256', iteration: 10000)</li>
+            <li>Derive k0 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'enc') (used as encryption key)</li>
+            <li>Derive k1 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
+            <li>
+              POST to '/register': (email, k1, kdf_iteration)
+            </li>
+            <li>
+              Generate salt <- 256bit random string
+            </li>
+            <li>
+              Derive k2 <- pbkdf2(password: k1, salt: salt, alg: 'sha256', iteration: 20000)
+            </li>
+            <li>
+              Create a user with (hashed_password, salt) = (k2, salt)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Crash course in cryptography</h3>
+        </section>
+
+        <section>
+          <h3>Key-derivation function</h3>
+
+          <p>A function to derive multiple keys from a single source key</p>
+        </section>
+
+        <section>
+          <h3>Pseudo-random function</h3>
+
+          <p>Defined over space (K, X, Y)</p>
+          <p>K x X -> Y such that there exists "efficient" algorithm to evaluate F(k,x)</p>
+        </section>
+
+        <section>
+          <h3>Problem with PRF</h3>
+
+          <ul>
+            <li>
+              Source key is not uniform (e.g. passwords are often dictionaries)
+            </li>
+            <li>
+              PRF is not psuedo-random if key is not uniform
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Extract-then-expand</h3>
+
+          <ol>
+            <li>Extract: extract a psuedo-random key, k, from the source key</li>
+            <li>Expand: Expand k using the pseudo-random function</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>HKDF (KDF from HMAC)</h3>
+
+          <ul>
+            <li>
+              Extract: k <- HMAC(salt, SK)
+            </li>
+            <li>
+              Expand using HMAC as PRF using k
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>PBKDF (Password-based KDF)</h3>
+
+          <ul>
+            <li>
+              Defends against dictionary attack
+            </li>
+            <li>
+              Salt, slow hash function
+            </li>
+            <li>
+              bcrypt, scrypt, argon, ...
+            </li>
           </ul>
         </section>
       </div>
