@@ -375,6 +375,125 @@ console.log("result:", hash);</code></pre>
             </li>
           </ul>
         </section>
+
+        <section>
+          <h3>Registering on <a href="https://dnote.io">dnote.io</a></h3>
+
+          <ul>
+            <li>User enters email and password</li>
+            <li>Derive k <- pbkdf2(password: password, salt: email, alg: 'sha256', iteration: 10000)</li>
+            <li>Derive k0 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'enc') (used as encryption key)</li>
+            <li>Derive k1 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
+            <li>
+              POST to '/register': (email, k1, kdf_iteration)
+            </li>
+              <hr>
+            <li>
+              Generate salt <- 256bit random string
+            </li>
+            <li>
+              Derive k2 <- pbkdf2(password: k1, salt: salt, alg: 'sha256', iteration: 20000)
+            </li>
+            <li>
+              Create a user with (hashed_password, salt) = (k2, salt)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code style="overflow: scroll;height: 700px;">function pbkdf2(secret, salt, iterations) {
+  const secretBuf = strToBuffer(secret);
+  const saltBuf = strToBuffer(salt);
+
+  const key = await window.crypto.subtle.importKey(
+    'raw',
+    secretBuf,
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  return window.crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: saltBuf,
+      iterations,
+      hash: { name: SHA256 }
+    },
+    key,
+    256
+  );
+}</code></pre>
+        </section>
+
+        <section>
+          <pre><code style="">function strToBuffer(str) {
+  // convert to utf8 encoding
+  const strUtf8 = unescape(encodeURIComponent(str));
+
+  const buf = new ArrayBuffer(strUtf8.length);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0; i < strUtf8.length; i++) {
+    bufView[i] = strUtf8.charCodeAt(i);
+  }
+
+  return buf;
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>What is ArrayBuffer?</h3>
+          <p>Fixed-size raw binary data buffer</p>
+
+<pre style="margin-left: 0;"><code>// create an ArrayBuffer with a size in bytes
+var buffer = new ArrayBuffer(8);
+
+console.log(buffer.byteLength);
+// expected output: 8</code></pre>
+        </section>
+
+        <section>
+          <h3>Viewed and manipulated using a mask</h3>
+
+<pre style="margin-left: 0;"><code>function bufToB64(buf) {
+  let binary = '';
+  const bytes = new Uint8Array(buf);
+  const len = bytes.byteLength;
+
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return window.btoa(binary);
+}
+</code></pre>
+        </section>
+
+        <section>
+          <pre><code style="overflow: scroll;height: 700px;">function pbkdf2(secret, salt, iterations) {
+  const secretBuf = strToBuffer(secret);
+  const saltBuf = strToBuffer(salt);
+
+  const key = await window.crypto.subtle.importKey(
+    'raw',
+    secretBuf,
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  return window.crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: saltBuf,
+      iterations,
+      hash: { name: SHA256 }
+    },
+    key,
+    256
+  );
+}</code></pre>
+        </section>
       </div>
 		</div>
 
