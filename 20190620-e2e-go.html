@@ -86,15 +86,17 @@ width: 80%;
 				</section>
 
         <section>
+          <h2>Agenda</h2>
+
           <ol>
-            <li>Definition &amp; building blocks</li>
+            <li>Definition</li>
             <li>Example</li>
           </ol>
 				</section>
 
         <section>
           <h2>
-            1. Definition &amp; building blocks
+            1. Definition
           </h2>
 				</section>
 
@@ -148,6 +150,10 @@ code {
         </style>
 
         <section>
+          <h2>2. Example</h2>
+        </section>
+
+        <section>
           <pre><code class="code">func AesGcmEncrypt(key, plaintext []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
@@ -175,22 +181,22 @@ code {
           <pre><code class="code">func AesGcmDecrypt(key []byte, dataB64 string) ([]byte, error) {
 	data, err := base64.StdEncoding.DecodeString(dataB64)
 	if err != nil {
-		return nil, errors.Wrap(err, "decoding base64 data")
+		return nil, err
 	}
 
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return nil, errors.Wrap(err, "initializing aes")
+		return nil, err
 	}
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return nil, errors.Wrap(err, "initializing gcm")
+		return nil, err
 	}
 
 	nonce, ciphertext := data[:aesGcmNonceSize], data[aesGcmNonceSize:]
 	plaintext, err := aesgcm.Open(nil, nonce, ciphertext, nil)
 	if err != nil {
-		return nil, errors.Wrap(err, "decrypting")
+		return nil, err
 	}
 
 	return plaintext, nil
@@ -201,7 +207,7 @@ code {
 <section>
   <h2>Symmetric Block Cipher</h2>
 
-  <p>A block cipher that uses tha same key to encrypt and decrypt</p>
+  <p>A block cipher that uses the same key to encrypt and decrypt</p>
 				</section>
 
         <section>
@@ -357,6 +363,36 @@ return cipherKeyB64, nil </code></pre>
 	return cipherKeyB64, nil
 }</code></pre>
         </section>
+
+<section>
+          <pre><code class="code">func AesGcmDecrypt(key []byte, dataB64 string) ([]byte, error) {
+	data, err := base64.StdEncoding.DecodeString(dataB64)
+	if err != nil {
+		return nil, err
+	}
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return nil, err
+	}
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return nil, err
+	}
+
+	nonce, ciphertext := data[:aesGcmNonceSize], data[aesGcmNonceSize:]
+	plaintext, err := aesgcm.Open(nil, nonce, ciphertext, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return plaintext, nil
+}</code></pre>
+        </section>
+
+<section>
+          <img class="img" src="assets/e2e2.png" alt="" />
+				</section>
 
       </div>
 		</div>
