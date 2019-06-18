@@ -394,6 +394,128 @@ return cipherKeyB64, nil </code></pre>
           <img class="img" src="assets/e2e2.png" alt="" />
 				</section>
 
+        <section>
+          <h2>Dnote</h2>
+
+          <img src="assets/dnote-gh2.png" alt="" class="img" style="width: 100% !important; margin: 0 !important;">
+        </section>
+
+        <section>
+          <p>A simple end-to-end encrypted notebook for developers</p>
+        </section>
+
+<section>
+          <img class="img" src="assets/e2e4.png" alt="" />
+				</section>
+
+<section>
+          <img class="img" src="assets/e2e5.gif" alt="" />
+				</section>
+
+        <section>
+          <p>How to establish a shared secret with the future self?</p>
+        </section>
+
+<section>
+          <h3>Registering on <a href="https://dnote.io">dnote.io</a></h3>
+
+          <ul>
+            <li>User enters email and password</li>
+            <li>Derive k <- pbkdf2(password: password, salt: email, alg: 'sha256', iteration: 10000)</li>
+            <li>Derive k0 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'enc') (used as encryption key)</li>
+            <li>Derive k1 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
+            <li>Derivce enc_k0 <- aes256(secret: k, data: k0)</li>
+            <li>
+              POST to '/register': (email, k1, enc_k0, kdf_iteration)
+            </li>
+              <hr>
+            <li>
+              Generate salt <- 256bit random string
+            </li>
+            <li>
+              Derive k2 <- pbkdf2(password: k1, salt: salt, alg: 'sha256', iteration: 20000)
+            </li>
+            <li>
+              Create a user with (hashed_password, salt) = (k2, salt)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code class="code">func Do(ctx infra.DnoteCtx, email, password string) error {
+	presigninResp, err := client.GetPresignin(ctx, email)
+	if err != nil {
+		return errors.Wrap(err, "getting presiginin")
+	}
+
+	masterKey, authKey, err := crypt.MakeKeys([]byte(password), []byte(email), presigninResp.Iteration)
+	if err != nil {
+		return errors.Wrap(err, "making keys")
+	}
+
+	authKeyB64 := base64.StdEncoding.EncodeToString(authKey)
+	signinResp, err := client.Signin(ctx, email, authKeyB64)
+	if err != nil {
+		return errors.Wrap(err, "requesting session")
+	}
+
+	cipherKeyDec, err := crypt.AesGcmDecrypt(masterKey, signinResp.CipherKeyEnc)
+	if err != nil {
+		return errors.Wrap(err, "decrypting cipher key")
+	}
+
+	cipherKeyDecB64 := base64.StdEncoding.EncodeToString(cipherKeyDec)
+	...
+}</code></pre>
+          </section>
+
+          <section>
+            <p>Free and open source</p>
+            <p>
+              <a href="https://github.com/dnote/dnote">https://github.com/dnote/dnote</a>
+            </p>
+          </section>
+
+          <section>
+            <h2>Summary</h2>
+
+            <ul>
+              <li>End-to-end encryption</li>
+              <li>Example using AES 256 symmetric block cipher</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Licenses</h3>
+
+            <ul>
+              <li>User icon: https://www.iconfinder.com/icons/172621/female_user_icon (Creative Commons License)</li>
+              <li>User icon/server icon: Github Octicon (MIT License)</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Links</h3>
+
+            <ul>
+              <li><a href="https://github.com/dnote/dnote">https://github.com/dnote/dnote</a></li>
+              <li><a href="https://forum.dnote.io">https://forum.dnote.io</a></li>
+              <li><a href="https://www.twitch.tv/sungwoncho">https://www.twitch.tv/sungwoncho</a></li>
+            </ul>
+          </section>
+
+          <section>
+          <h2>Thanks</h2>
+
+          <div>
+            Sung<br />
+            Monomax Software<br />
+            <a href="mailto:sung@monomax.sh">sung@monomax.sh</a><br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
+          </div>
+
+        </section>
+
       </div>
 		</div>
 
