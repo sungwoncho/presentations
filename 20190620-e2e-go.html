@@ -151,17 +151,17 @@ code {
           <pre><code class="code">func AesGcmEncrypt(key, plaintext []byte) (string, error) {
 	block, err := aes.NewCipher(key)
 	if err != nil {
-		return "", errors.Wrap(err, "initializing aes")
+		return "", err
 	}
 
 	aesgcm, err := cipher.NewGCM(block)
 	if err != nil {
-		return "", errors.Wrap(err, "initializing gcm")
+		return "", err
 	}
 
 	nonce := make([]byte, aesGcmNonceSize)
 	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
-		return "", errors.Wrap(err, "generating nonce")
+		return "", err
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
@@ -287,6 +287,7 @@ e.g. AES uses 128 bits block size.
           <img class="img" src="assets/e2e3.png" alt="">
         </section>
 
+
 <section>
   <ul>
     <li>CBC</li>
@@ -300,6 +301,63 @@ e.g. AES uses 128 bits block size.
           <h3>GCM</h3>
           <p>Provides both confidentiality and authenticity (encrypt-then-MAC)</p>
         </section>
+
+        <section>
+          <p>Encrypt using nonce</p>
+          <pre><code class="code" style="font-size:130% !important;">nonce := make([]byte, aesGcmNonceSize)
+if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+  return "", err
+}
+
+ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil) </code></pre> </section>
+
+          <section>
+            <ul>
+              <li>
+Nonce is used to generate a stream of keys (k1,k2,...,kn)
+              </li>
+              <li>
+keys are XORed with each block
+              </li>
+            </ul>
+          </section>
+
+
+<section>
+          <img class="img" src="assets/e2e3.png" alt="">
+        </section>
+
+          <section>
+            <p>Base64 encode</p>
+            <pre><code class="code" style="font-size:130% !important;">cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+
+return cipherKeyB64, nil </code></pre>
+          </section>
+
+<section>
+          <pre><code class="code">func AesGcmEncrypt(key, plaintext []byte) (string, error) {
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		return "", err
+	}
+
+	aesgcm, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	nonce := make([]byte, aesGcmNonceSize)
+	if _, err := io.ReadFull(rand.Reader, nonce); err != nil {
+		return "", err
+	}
+
+	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
+	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+
+	return cipherKeyB64, nil
+}</code></pre>
+        </section>
+
       </div>
 		</div>
 
