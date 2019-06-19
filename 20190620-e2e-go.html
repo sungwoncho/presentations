@@ -405,15 +405,18 @@ return cipherKeyB64, nil </code></pre>
         </section>
 
 <section>
-          <img class="img" src="assets/e2e4.png" alt="" />
-				</section>
-
-<section>
           <img class="img" src="assets/e2e5.gif" alt="" />
 				</section>
 
+<section>
+  <p>A note is just a message to the future self.</p>
+        </section>
+<section>
+          <img class="img" src="assets/e2e4.png" alt="" />
+				</section>
+
         <section>
-          <p>How to establish a shared secret with the future self?</p>
+          <p>How to safely store a shared secret with the future self?</p>
         </section>
 
 <section>
@@ -442,26 +445,32 @@ return cipherKeyB64, nil </code></pre>
         </section>
 
         <section>
+          <pre><code class="code" style="font-size: 130% !important;">$ dnote login
+  [?] email: sung@monomax.sh
+  [?] password: </code></pre>
+        </section>
+
+        <section>
           <pre><code class="code">func Do(ctx infra.DnoteCtx, email, password string) error {
 	presigninResp, err := client.GetPresignin(ctx, email)
 	if err != nil {
-		return errors.Wrap(err, "getting presiginin")
+		return err
 	}
 
 	masterKey, authKey, err := crypt.MakeKeys([]byte(password), []byte(email), presigninResp.Iteration)
 	if err != nil {
-		return errors.Wrap(err, "making keys")
+		return err
 	}
 
 	authKeyB64 := base64.StdEncoding.EncodeToString(authKey)
 	signinResp, err := client.Signin(ctx, email, authKeyB64)
 	if err != nil {
-		return errors.Wrap(err, "requesting session")
+		return err
 	}
 
 	cipherKeyDec, err := crypt.AesGcmDecrypt(masterKey, signinResp.CipherKeyEnc)
 	if err != nil {
-		return errors.Wrap(err, "decrypting cipher key")
+		return err
 	}
 
 	cipherKeyDecB64 := base64.StdEncoding.EncodeToString(cipherKeyDec)
@@ -469,7 +478,8 @@ return cipherKeyB64, nil </code></pre>
 }</code></pre>
           </section>
 
-          <section>
+          <section style="text-align: center;">
+          <img src="assets/e2e5.gif" alt="" />
             <p>Free and open source</p>
             <p>
               <a href="https://github.com/dnote/dnote">https://github.com/dnote/dnote</a>
