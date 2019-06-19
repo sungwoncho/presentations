@@ -107,6 +107,18 @@ width: 80%;
 				</section>
 
         <section>
+          <img class="img" src="assets/e2e2.png" alt="" />
+				</section>
+
+<section>
+          <ul>
+            <li>Only Alice and Bob can read the message</li>
+            <li>Need a shared secret (symmetric encryption)</li>
+            <li>Or use asymmetric encryption</li>
+          </ul>
+				</section>
+
+        <section>
           <h3>
             What it's not
           </h3>
@@ -128,16 +140,6 @@ width: 80%;
 				</section>
 
 
-        <section>
-          <img class="img" src="assets/e2e2.png" alt="" />
-				</section>
-
-<section>
-          <ul>
-            <li>Only Alice and Bob can read the message</li>
-            <li>Need a shared secret</li>
-          </ul>
-				</section>
 
         <style>
 code {
@@ -177,9 +179,9 @@ code {
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+	ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-	return cipherKeyB64, nil
+	return ciphertextB64, nil
 }</code></pre>
         </section>
 
@@ -215,10 +217,10 @@ code {
           <h3>Designs</h3>
           <ul>
             <li>
-              AES
+              AES (Advanced Encryption Standard)
             </li>
 <li>
-  DES
+  DES (Data Encryption Standard)
             </li>
           </ul>
         </section>
@@ -249,9 +251,9 @@ code {
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+	ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-	return cipherKeyB64, nil
+	return ciphertextB64, nil
 }</code></pre>
         </section>
 
@@ -285,9 +287,9 @@ if err != nil {
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+	ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-	return cipherKeyB64, nil
+	return ciphertextB64, nil
 }</code></pre>
         </section>
 
@@ -320,10 +322,12 @@ e.g. AES uses 128 bits block size.
 
 
 <section>
+  <h3>Mode of operations</h3>
+
   <ul>
-    <li>CBC</li>
-    <li>CTR</li>
-    <li>GCM</li>
+    <li>CBC (Cipher block chaining)</li>
+    <li>CTR (Counter)</li>
+    <li>GCM (Galois/Counter Mode)</li>
     <li>...</li>
   </ul>
 				</section>
@@ -351,9 +355,9 @@ e.g. AES uses 128 bits block size.
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+	ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-	return cipherKeyB64, nil
+	return ciphertextB64, nil
 }</code></pre>
         </section>
 
@@ -399,9 +403,9 @@ keys are XORed with each block
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+	ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-	return cipherKeyB64, nil
+	return ciphertextB64, nil
 }</code></pre>
         </section>
 
@@ -409,9 +413,9 @@ keys are XORed with each block
 
           <section>
             <p>Base64 encode</p>
-            <pre><code class="code" style="font-size:130% !important;">cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+            <pre><code class="code" style="font-size:130% !important;">ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-return cipherKeyB64, nil </code></pre>
+return ciphertextB64, nil </code></pre>
           </section>
 
 
@@ -433,9 +437,9 @@ return cipherKeyB64, nil </code></pre>
 	}
 
 	ciphertext := aesgcm.Seal(nonce, nonce, []byte(plaintext), nil)
-	cipherKeyB64 := base64.StdEncoding.EncodeToString(ciphertext)
+	ciphertextB64 := base64.StdEncoding.EncodeToString(ciphertext)
 
-	return cipherKeyB64, nil
+	return ciphertextB64, nil
 }</code></pre>
         </section>
 
@@ -494,7 +498,7 @@ return cipherKeyB64, nil </code></pre>
 				</section>
 
         <section>
-          <p>How to safely store a shared secret with the future self?</p>
+          <p>Establishing a secret shared with the future self</p>
         </section>
 
 <section>
@@ -503,21 +507,11 @@ return cipherKeyB64, nil </code></pre>
           <ul>
             <li>User enters email and password</li>
             <li>Derive k <- pbkdf2(password: password, salt: email, alg: 'sha256', iteration: 10000)</li>
-            <li>Derive k0 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'enc') (used as encryption key)</li>
-            <li>Derive k1 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
-            <li>Derivce enc_k0 <- aes256(secret: k, data: k0)</li>
+            <li>Derive enc_key <- random_256_bits()</li>
+            <li>Derive auth_key <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
+            <li>Derivce enc_key_enc <- aes256(secret: k, data: enc_key)</li>
             <li>
-              POST to '/register': (email, k1, enc_k0, kdf_iteration)
-            </li>
-              <hr>
-            <li>
-              Generate salt <- 256bit random string
-            </li>
-            <li>
-              Derive k2 <- pbkdf2(password: k1, salt: salt, alg: 'sha256', iteration: 20000)
-            </li>
-            <li>
-              Create a user with (hashed_password, salt) = (k2, salt)
+              POST to '/register': (email, auth_key, enc_key_enc)
             </li>
           </ul>
         </section>
@@ -530,12 +524,7 @@ return cipherKeyB64, nil </code></pre>
 
         <section>
           <pre><code class="code">func Do(ctx infra.DnoteCtx, email, password string) error {
-	presigninResp, err := client.GetPresignin(ctx, email)
-	if err != nil {
-		return err
-	}
-
-	masterKey, authKey, err := crypt.MakeKeys([]byte(password), []byte(email), presigninResp.Iteration)
+	masterKey, authKey, err := crypt.MakeKeys([]byte(password), []byte(email))
 	if err != nil {
 		return err
 	}
@@ -550,8 +539,6 @@ return cipherKeyB64, nil </code></pre>
 	if err != nil {
 		return err
 	}
-
-	cipherKeyDecB64 := base64.StdEncoding.EncodeToString(cipherKeyDec)
 	...
 }</code></pre>
           </section>
@@ -565,6 +552,18 @@ return cipherKeyB64, nil </code></pre>
           </section>
 
           <section>
+            <h2>Alternatives</h2>
+            <ul>
+              <li>
+                Asymmetric encryption (RSA, ElGamal)
+              </li>
+              <li>
+                Key exchange (Diffie-Hellman)
+              </li>
+            </ul>
+          </section>
+
+          <section>
             <h2>Summary</h2>
 
             <ul>
@@ -574,7 +573,7 @@ return cipherKeyB64, nil </code></pre>
           </section>
 
           <section>
-            <h3>Licenses</h3>
+            <h3>Attribution</h3>
 
             <ul>
               <li>User icon: https://www.iconfinder.com/icons/172621/female_user_icon (Creative Commons License)</li>
@@ -587,7 +586,6 @@ return cipherKeyB64, nil </code></pre>
 
             <ul>
               <li><a href="https://github.com/dnote/dnote">https://github.com/dnote/dnote</a></li>
-              <li><a href="https://forum.dnote.io">https://forum.dnote.io</a></li>
               <li><a href="https://www.twitch.tv/sungwoncho">https://www.twitch.tv/sungwoncho</a></li>
             </ul>
           </section>
