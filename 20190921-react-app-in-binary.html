@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+		if (location.hostname.indexOf("github.io") > -1) {
+  (function(i, s, o, g, r, a, m) {
+    i["GoogleAnalyticsObject"] = r;
+    (i[r] =
+      i[r] ||
+      function() {
+        (i[r].q = i[r].q || []).push(arguments);
+      }),
+      (i[r].l = 1 * new Date());
+    (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m);
+  })(
+    window,
+    document,
+    "script",
+    "https://www.google-analytics.com/analytics.js",
+    "ga"
+  );
+
+  ga("create", "UA-55773666-12", "auto");
+  ga("send", "pageview");
+}
+</script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Self-hostable React App with a Single Binary</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+		var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = window.location.search.match(/print-pdf/gi)
+  ? "css/print/pdf.css"
+  : "css/print/paper.css";
+document.getElementsByTagName("head")[0].appendChild(link);
+</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+		h1 {
+			font-size: 60px !important;
+		}
+		h2 {
+            font-size: 70px !important;
+		}
+		h3 {
+            font-size: 55px !important;
+		}
+		pre {
+	    font-size: 26px !important;
+		}
+		.fast {
+	    background: #d1ffd1;
+		}
+		.slow {
+			background: #ffd5d5;
+		}
+		ul, ol {
+			font-size: 60px !important;
+		}
+	</style>
+
+		<div class="reveal">
+      <div class="slides">
+
+				<section>
+          <h1>Distributing Your React Apps as Binaries</h1>
+
+          <div>
+            Sung<br />
+            Monomax Software<br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
+          </div>
+				</section>
+
+				<section>
+					<h2>How to distribute your React app + backend in a single binary</h2>
+				</section>
+
+        <section>
+          gif goes here
+        </section>
+
+
+				<section>
+          <h2>What can it do for you?</h2>
+
+          <ul>
+            <li>
+              Allow users to self-host
+            </li>
+            <li>
+              Easier to sell your software
+            </li>
+            <li>
+              Simplify deployment process
+            </li>
+          </ul>
+				</section>
+
+        <section>
+          <img src="assets/reactbinary1.png" alt="" class="img" style="width: 100% !important; margin: 0 !important;">
+        </section>
+
+        <section>
+          <img src="assets/reactbinary2.png" alt="" class="img" style="width: 100% !important; margin: 0 !important;">
+        </section>
+
+				<section>
+          <h2>Dnote</h2>
+
+          <img src="assets/dnote-gh2.png" alt="" class="img" style="width: 100% !important; margin: 0 !important;">
+          <a href="https://github.com/dnote/dnote">https://github.com/dnote/dnote</a>
+				</section>
+
+				<section>
+          <p>
+            Go Web API server + React frontend
+          </p>
+        </section>
+
+        <section>
+          <h2>
+            Basic idea
+          </h2>
+          <ol style="font-size: 50px !important;">
+            <li>
+              Write backend in a language that can produce a binary
+            </li>
+            <li>
+              Embed static files inside the binary
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>How to embed static files?</h2>
+
+          <ul>
+            <li>
+              script
+            </li>
+            <li>
+              libraries (e.g. <a href="https://github.com/gobuffalo/packr">packr</a>)
+            </li>
+          </ul>
+
+        </section>
+
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: "slide", // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    {
+      src: "lib/js/classList.js",
+      condition: function() {
+        return !document.body.classList;
+      }
+    },
+    {
+      src: "plugin/markdown/marked.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/markdown/markdown.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/highlight/highlight.js",
+      async: true,
+      condition: function() {
+        return !!document.querySelector("pre code");
+      },
+      callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    },
+    { src: "plugin/zoom-js/zoom.js", async: true },
+    { src: "plugin/notes/notes.js", async: true }
+  ]
+});
+</script>
+
+	</body>
+</html>
