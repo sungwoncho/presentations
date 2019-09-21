@@ -83,7 +83,11 @@ document.getElementsByTagName("head")[0].appendChild(link);
 		}
 		pre {
 	    font-size: 26px !important;
+        width: 100% !important;
 		}
+    pre code {
+      max-height: 600px !important;
+    }
 		.fast {
 	    background: #d1ffd1;
 		}
@@ -129,6 +133,9 @@ document.getElementsByTagName("head")[0].appendChild(link);
             </li>
             <li>
               Simplify deployment process
+            </li>
+            <li>
+              No disk I/O
             </li>
           </ul>
 				</section>
@@ -179,6 +186,101 @@ document.getElementsByTagName("head")[0].appendChild(link);
               libraries (e.g. <a href="https://github.com/gobuffalo/packr">packr</a>)
             </li>
           </ul>
+        </section>
+
+        <section>
+<pre><code class="code">func startCmd() {
+	c := database.Config{
+		Host:     os.Getenv("DBHost"),
+		Port:     os.Getenv("DBPort"),
+		Name:     os.Getenv("DBName"),
+		User:     os.Getenv("DBUser"),
+		Password: os.Getenv("DBPassword"),
+	}
+	database.Open(c)
+	database.InitSchema()
+	defer database.Close()
+
+	mailer.InitTemplates(nil)
+
+	// Perform database migration
+	database.Migrate()
+
+	// Run job in the background
+	go job.Run()
+
+	srv := initServer()
+
+	log.Printf("Dnote version %s is running on port %s", versionTag, *port)
+	addr := fmt.Sprintf(":%s", *port)
+	log.Println(http.ListenAndServe(addr, srv))
+}
+</code></pre>
+        </section>
+
+<section>
+<pre><code class="code">func initServer() *mux.Router {
+	srv := mux.NewRouter()
+
+	apiRouter := handlers.NewRouter()
+
+	srv.PathPrefix("/api").Handler(http.StripPrefix("/api", apiRouter))
+	srv.PathPrefix("/").HandlerFunc(getAppHandler())
+
+	return srv
+} </code></pre>
+        </section>
+
+<section>
+<pre><code class="code">func getAppHandler() http.HandlerFunc {
+	box := packr.New("web", "../../web/public")
+
+	fs := http.FileServer(box)
+	appShell := box.Find("index.html")
+
+	return func(w http.ResponseWriter, r *http.Request) {
+		parts := strings.Split(r.URL.Path, "/")
+		if len(parts) >= 2 && parts[1] == "dist" {
+			fs.ServeHTTP(w, r)
+			return
+		}
+
+		// All other requests should serve the index.html file
+		w.Write(appShell)
+	}
+} </code></pre>
+        </section>
+
+        <section>
+          <img src="assets/reactbinary3.png" alt="" class="img" style="width: 100% !important; margin: 0 !important;">
+        </section>
+
+        <section>
+          <h2>Benefit</h2>
+
+          <ul>
+            <li>
+              Portability (e.g. self-host)
+            </li>
+            <li>
+              Easy to upgrade software
+            </li>
+          </ul>
+				</section>
+
+				<section>
+					<h2>How to distribute your React app + backend in a single binary</h2>
+				</section>
+
+          <section>
+          <h2>Thanks</h2>
+
+          <div>
+            Sung<br />
+            Monomax Software<br />
+            <a href="mailto:sung@monomax.sh">sung@monomax.sh</a><br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
+          </div>
 
         </section>
 
