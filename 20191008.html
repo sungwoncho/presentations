@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<!-- START: GA -->
+		<script>
+</script>
+		<!-- END: GA -->
+
+
+		<meta charset="utf-8">
+
+		<title>Web Crypto API</title>
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <style>
+      img {
+        border: none !important;
+      }
+      code {
+        font-size: 150% !important;
+        line-height: 150% !important;
+        max-height: initial !important;
+      }
+    </style>
+
+		<!-- Printing and PDF exports -->
+		<script>
+		var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = window.location.search.match(/print-pdf/gi)
+  ? "css/print/pdf.css"
+  : "css/print/paper.css";
+document.getElementsByTagName("head")[0].appendChild(link);
+</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+	<style media="screen">
+section, .left {
+  text-align: left;
+}
+  </style>
+
+		<div class="reveal">
+      <div class="slides">
+				<section>
+          <h1>Web Crypto API</h1>
+
+          <div>
+            Sung<br />
+            Monomax Software<br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
+          </div>
+				</section>
+
+        <section>
+          <h2>Web Crypto API</h2>
+
+          <ol>
+            <li>
+              Introduction
+            </li>
+            <li>
+              Real life example
+            </li>
+          </ol>
+				</section>
+
+        <section>
+          <h2>1. Introduction</h2>
+        </section>
+
+        <section>
+          <h3>Web Crypto API</h3>
+
+          <p>A standardized JavaScript interface for accessing cryptographic primitives</p>
+        </section>
+
+        <section>
+          <h3>W3C published a recommendation in January 2017</h3>
+        </section>
+
+        <section>
+          <h3>All major browsers implement it</h3>
+        </section>
+
+        <section>
+          <img src="assets/webcrypto-penang-1.png" alt="">
+          <a href="https://caniuse.com/#search=crypto">https://caniuse.com/#search=crypto</a>
+        </section>
+
+        <section>
+          <h3>Browser crypto implementations</h3>
+
+          <ul>
+            <li>Firefox - NSS (Network Security Services)</li>
+            <li>Chrome - BoringSSL</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>An interface for the underlying implementations</h3>
+        </section>
+
+        <section>
+          <h3>
+            window.crypto.subtle
+          </h3>
+
+          <ul>
+            <li>
+              low-level cryptography APIs.
+            </li>
+            <li>
+              very easy to misuse.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code>window.crypto.subtle.generateKey(
+    {
+        name: "HMAC",
+        hash: {name: "SHA-256"},
+    },
+    false,
+    ["sign", "verify"]
+)
+.then(function(key){
+    console.log(key);
+})
+.catch(function(err){
+    console.error(err);
+});</code></pre>
+        </section>
+
+        <section>
+          <pre><code>window.crypto.subtle.sign(
+    {
+        name: "HMAC",
+    },
+    key,
+    data // ArrayBuffer of data you want to sign
+)
+.then(function(signature){
+    //an ArrayBuffer containing the signature
+    console.log(new Uint8Array(signature));
+})
+.catch(function(err){
+    console.error(err);
+});</code></pre>
+        </section>
+
+<section>
+          <pre><code>window.crypto.subtle.encrypt(
+    {
+      name: 'AES-GCM',
+      iv: someRandomBytes
+    },
+    cipherKey,
+    dataBuf
+).then(function(ciphertext){
+    console.log(ciphertext);
+})
+.catch(function(err){
+    console.error(err);
+});</code></pre>
+        </section>
+
+        <section>
+          <h3>
+            window.crypto.subtle
+          </h3>
+
+          <ul>
+    <li>decrypt()</li>
+    <li>deriveBits()</li>
+    <li>deriveKey()</li>
+    <li>digest()</li>
+    <li>encrypt()</li>
+    <li>exportKey()</li>
+    <li>generateKey()</li>
+    <li>importKey()</li>
+    <li>sign()</li>
+    <li>unwrapKey()</li>
+    <li>verify()</li>
+    <li>wrapKey()</li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>2. Real life examples</h2>
+        </section>
+
+        <section>
+          <h3 style="margin-bottom: 0;">NAD</h3>
+          <p style="margin-top: 0;">An open source, encrypted notebook that respects your privacy</p>
+          <a href="https://www.nadproject.com">https://www.nadproject.com</a>
+
+        </section>
+
+        <section>
+          <h3 style="margin-bottom: 0;">NAD</h3>
+
+          <ul>
+            <li>
+              Forked from Dnote (<a href="https://www.getdnote.com">https://www.getdnote.com</a>).
+            </li>
+
+            <li>
+              Stands for <i>"NAD Ain't Dnote"</i> or <i>"Not A Dnote"</i>.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Design goal</h3>
+
+          <ul>
+            <li>Clients can write encrypted notes on the server</li>
+            <li>Server cannot decrypt the notes</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>My solution (registration)</h3>
+
+          <ul>
+            <li>User enters email and password</li>
+            <li>Derive k <- pbkdf2(password: password, salt: email, alg: 'sha256', iteration: 10000)</li>
+            <li>Derive k0 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'enc') (used as encryption key)</li>
+            <li>Derive k1 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
+            <li>
+              POST to '/register': (email, k1, kdf_iteration)
+            </li>
+            <li>
+              Generate salt <- 256bit random string
+            </li>
+            <li>
+              Derive k2 <- pbkdf2(password: k1, salt: salt, alg: 'sha256', iteration: 20000)
+            </li>
+            <li>
+              Create a user with (hashed_password, salt) = (k2, salt)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Crash course in cryptography</h3>
+        </section>
+
+        <section>
+          <h3>Key-derivation function</h3>
+
+          <p>A function to derive multiple keys from a single source key</p>
+        </section>
+
+        <section>
+          <h3>Pseudo-random function</h3>
+
+          <p>Defined over space (K, X, Y)</p>
+          <p>K x X -> Y such that there exists "efficient" algorithm to evaluate F(k,x)</p>
+        </section>
+
+        <section>
+          <h3>Pseudo-random?</h3>
+
+          <p>
+            Nothing is truly random. Approximates the randomness.
+          </p>
+        </section>
+
+        <section>
+          <h3>Problem with PRF</h3>
+
+          <ul>
+            <li>
+              Source key is not uniform (e.g. passwords are often dictionaries)
+            </li>
+            <li>
+              PRF is not psuedo-random if key is not uniform
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Extract-then-expand</h3>
+
+          <ol>
+            <li>Extract: extract a psuedo-random key, k, from the source key</li>
+            <li>Expand: Expand k using the pseudo-random function</li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>HKDF (KDF from HMAC)</h3>
+
+          <ul>
+            <li>
+              Extract: k <- HMAC(salt, SK)
+            </li>
+            <li>
+              Expand using HMAC as PRF using k
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>PBKDF (Password-based KDF)</h3>
+
+          <ul>
+            <li>
+              Defends against dictionary attack
+            </li>
+            <li>
+              Salt, slow hash function
+            </li>
+            <li>
+              bcrypt, scrypt, argon, ...
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Registering on <a href="https://www.nadproject.com">www.nadproject.com</a></h3>
+
+          <ul>
+            <li>User enters email and password</li>
+            <li>Derive k <- pbkdf2(password: password, salt: email, alg: 'sha256', iteration: 10000)</li>
+            <li>Derive k0 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'enc') (used as encryption key)</li>
+            <li>Derive k1 <- hkdf(alg: 'sha256', secret: k, salt: email, info: 'auth') (sent to server for authentication)</li>
+            <li>
+              POST to '/register': (email, k1, kdf_iteration)
+            </li>
+              <hr>
+            <li>
+              Generate salt <- 256bit random string
+            </li>
+            <li>
+              Derive k2 <- pbkdf2(password: k1, salt: salt, alg: 'sha256', iteration: 20000)
+            </li>
+            <li>
+              Create a user with (hashed_password, salt) = (k2, salt)
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <pre><code style="overflow: scroll;height: 700px;">function pbkdf2(secret, salt, iterations) {
+  const secretBuf = strToBuffer(secret);
+  const saltBuf = strToBuffer(salt);
+
+  const key = await window.crypto.subtle.importKey(
+    'raw',
+    secretBuf,
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  return window.crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: saltBuf,
+      iterations,
+      hash: { name: SHA256 }
+    },
+    key,
+    256
+  );
+}</code></pre>
+        </section>
+
+        <section>
+          <pre><code style="">function strToBuffer(str) {
+  // convert to utf8 encoding
+  const strUtf8 = unescape(encodeURIComponent(str));
+
+  const buf = new ArrayBuffer(strUtf8.length);
+  const bufView = new Uint8Array(buf);
+  for (let i = 0; i < strUtf8.length; i++) {
+    bufView[i] = strUtf8.charCodeAt(i);
+  }
+
+  return buf;
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>What is ArrayBuffer?</h3>
+          <p>Fixed-size raw binary data buffer</p>
+
+<pre style="margin-left: 0;"><code>// create an ArrayBuffer with a size in bytes
+var buffer = new ArrayBuffer(8);
+
+console.log(buffer.byteLength);
+// expected output: 8</code></pre>
+        </section>
+
+        <section>
+          <h3>Viewed and manipulated using a mask</h3>
+
+<pre style="margin-left: 0;"><code>function bufToB64(buf) {
+  let binary = '';
+  const bytes = new Uint8Array(buf);
+  const len = bytes.byteLength;
+
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+
+  return window.btoa(binary);
+}
+</code></pre>
+        </section>
+
+        <section>
+          <pre><code style="overflow: scroll;height: 700px;">function pbkdf2(secret, salt, iterations) {
+  const secretBuf = strToBuffer(secret);
+  const saltBuf = strToBuffer(salt);
+
+  const key = await window.crypto.subtle.importKey(
+    'raw',
+    secretBuf,
+    { name: 'PBKDF2' },
+    false,
+    ['deriveBits']
+  );
+
+  return window.crypto.subtle.deriveBits(
+    {
+      name: 'PBKDF2',
+      salt: saltBuf,
+      iterations,
+      hash: { name: SHA256 }
+    },
+    key,
+    256
+  );
+}</code></pre>
+        </section>
+
+        <section>
+          <pre><code style="overflow: scroll;height: 700px;">async function hkdf(secret, salt, info, algorithm, dkLen) {
+  let secretBuf;
+  if (typeof secret === 'string') {
+    secretBuf = strToBuffer(secret);
+  } else {
+    secretBuf = secret;
+  }
+
+  const saltBuf = strToBuffer(salt);
+  const infoBuf = strToBuffer(info);
+
+  const key = await window.crypto.subtle.importKey(
+    'raw',
+    secretBuf,
+    {
+      name: 'HKDF'
+    },
+    false,
+    ['deriveBits']
+  );
+
+  return window.crypto.subtle.deriveBits(
+    {
+      name: HKDF,
+      hash: algorithm,
+      salt: saltBuf,
+      info: infoBuf
+    },
+    key,
+    dkLen
+  );
+}
+</code></pre>
+        </section>
+
+        <section>
+<pre><code style="">async function makeKeys(email, password, iteration) {
+  const masterKey = await pbkdf2(password, email, iteration);
+  const encKeyBits = await hkdf(
+    masterKey, email, 'enc', SHA256, 256
+  );
+  const authKeyBits = await hkdf(
+    masterKey, email, 'auth', SHA256, 256
+  );
+
+  return {
+    encKey: bufToB64(encKeyBits),
+    authKey: bufToB64(authKeyBits)
+  };
+}</code></pre>
+        </section>
+
+        <section>
+          <h3>...And more</h3>
+
+          <p>symmetric block cipher using AES256 in GCM mode</p>
+        </section>
+
+        <section>
+          <h3>Open source</h3>
+
+          <a href="https://www.nadproject.com">https://www.nadproject.com</a>
+        </section>
+
+        <section>
+          <h3>Wrap up - Web Crypto API</h3>
+
+          <ol>
+            <li>
+              Introduction
+            </li>
+            <li>
+              Real life examples
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>Conclusion</h3>
+
+          <ul>
+            <li>
+              A unified JavaScript interface for accessing cryptographic primitives
+            </li>
+            <li>
+              All major browser vendors implement it
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>NAD Project</h3>
+          <ul>
+            <li>
+              Learn cryptography in JS together.
+            </li>
+            <li>
+              It's open source.
+            </li>
+            <li>
+              The future is private.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+            <h3>Links</h3>
+
+            <ul>
+              <li><a href="https://github.com/nadproject/nad">https://github.com/nadproject/nad</a></li>
+              <li><a href="https://github.com/dnote/dnote">https://github.com/dnote/dnote</a></li>
+              <li><a href="https://sungwoncho">https://sungwoncho</a></li>
+            </ul>
+          </section>
+
+        <section>
+          <h2>Thanks</h2>
+
+          <div>
+            Sung<br />
+            Monomax Software<br />
+            <a href="mailto:sung@monomax.sh">sung@monomax.sh</a><br />
+            <a href="https://monomax.sh">https://monomax.sh</a>
+          </div>
+
+        </section>
+      </div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+// Full list of configuration options available at:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+
+  transition: "slide", // none/fade/slide/convex/concave/zoom
+
+  // Optional reveal.js plugins
+  dependencies: [
+    {
+      src: "lib/js/classList.js",
+      condition: function() {
+        return !document.body.classList;
+      }
+    },
+    {
+      src: "plugin/markdown/marked.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/markdown/markdown.js",
+      condition: function() {
+        return !!document.querySelector("[data-markdown]");
+      }
+    },
+    {
+      src: "plugin/highlight/highlight.js",
+      async: true,
+      condition: function() {
+        return !!document.querySelector("pre code");
+      },
+      callback: function() {
+        hljs.initHighlightingOnLoad();
+      }
+    },
+    { src: "plugin/zoom-js/zoom.js", async: true },
+    { src: "plugin/notes/notes.js", async: true }
+  ]
+});
+</script>
+
+	</body>
+</html>
